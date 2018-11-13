@@ -142,15 +142,15 @@ def sim (MIPS_HEX):
     instr_mem_input = open(MIPS_HEX, "r")#read file for programming instructions
     instr_mem = file_to_array(instr_mem_input)
     dic=0   #dynamic instruction will be counted
-    while pc < len(instr_mem):
-        op = instr_mem[pc]
+    while pc/4 < len(instr_mem):
+        op = instr_mem[pc/4]
         print("PC: ", pc)
         data_set = execute_operation(op, reg_arr, pc, branch, cycle)
         reg_arr = data_set[0]
         pc=data_set[1]
         branch=data_set[2]
         cycle=data_set[3]
-        print("register array:", reg_arr)#prints for each instruction so we can see what is being stored in each register
+        print("Register Array:", reg_arr)#prints for each instruction so we can see what is being stored in each register
         dic+=1 #increment DIC by 1 everytime we perform an instruction
 
     print("Dynmic Instruction Count: ", dic)
