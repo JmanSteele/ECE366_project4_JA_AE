@@ -42,7 +42,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         x+=10000
         cycle[0]+=1    #single cycle
         cycle[1]+=3    #multi cycle
-        cycle[2]+=2    #pipeline
+        cycle[2]+=1    #pipeline
         cycle[3]+=1    #3 step
     elif op[0:6]=="001000":
         #addi instruction
@@ -103,6 +103,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
             offset=int(op[16:32], 2)
         print("OFFset: ", int(offset))
         if reg_arr[rs]==reg_arr[rt]:
+            pc+=4
             pc=pc+(int(offset)*4)
             cycle[2]+=2   #stall for branch so pipeline increases by 2
             x+=1
@@ -139,7 +140,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         print("RD: $", rd)
         cycle[0]+=1    #single cycle
         cycle[1]+=4    #multi cycle
-        cycle[2]+=1    #pipeline
+        cycle[2]+=2    #pipeline
         cycle[4]+=1    #step 4
         pc+=4
         x+=1
