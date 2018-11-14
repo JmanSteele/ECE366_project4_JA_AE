@@ -24,9 +24,13 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         #add instruction
         print("ADD")
         rs=int(op[6:11], 2)
+        print("RS register: $", rs)
         rt=int(op[11:16], 2)
+        print("RT register: $", rt) 
         rd=int(op[16:21], 2)
+        print("RD register: $", rd)
         reg_arr[rd]=int(reg_arr[rs]) + int(reg_arr[rt])
+        print("The result stored in Register RD is: ", reg_arr[rd])
         pc+=4
         cycle[0]+=1
         cycle[1]+=4
@@ -36,6 +40,9 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         print("X:", x)
     elif op[0:32]=="00010000000000001111111111111111":
         x+=10000
+        cycle[0]+=1
+        cycle[1]+=3
+        cycle[2]+=2
     elif op[0:6]=="001000":
         #addi instruction
         print("ADDI")
@@ -46,6 +53,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         print("RT: $", rt)
         print("imm: ", imm)
         reg_arr[rt]=int(reg_arr[rs]) + imm
+        print("Result stored in RT is :", reg_arr[rt])
         pc+=4
         cycle[0]+=1
         cycle[1]+=4
@@ -84,20 +92,19 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         #Branch instruction
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
-        offset=int(op[16:32], 2)
-        print("offset1: ", offset)
         cycle[0]+=1
         cycle[1]+=3
         cycle[3]+=1
-        if (op[16], 2)=="1":
-            offset = -offset
-            print("offset", offset)
-            offset = 0b1111111111111111 - int(offset, 2) + 1
+        if op[16]=="1":
+            offset = -(65535 -int(op[16:32],2)+1)
+            print("offset when MSB is 1: ", offset)
+        else:
+            offset=int(op[16:32], 2)
         print("OFFset: ", int(offset))
         if reg_arr[rs]==reg_arr[rt]:
             pc=pc+(int(offset)*4)
             cycle[2]+=2
-            x+=1+int(offset)
+            x+=int(offset)
         else:
             pc+=4
             cycle[2]+=1
@@ -114,7 +121,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         if reg_arr[rs]!=reg_arr[rt]:
             pc+=offset*4
             cycle[2]+=2
-            x+=1+offset
+            x=x+1+offset
         else:
             pc+=4
             cycle[2]+=1
@@ -123,8 +130,11 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         print("SLT")
         #set less than
         rs=int(op[6:11], 2)
+        print("RS: $", rs)
         rt=int(op[11:16], 2)
+        print("RT: $", rt)
         rd=int(op[16:21], 2)
+        print("RD: $", rd)
         cycle[0]+=1
         cycle[1]+=4
         cycle[2]+=1
@@ -133,8 +143,11 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         x+=1
         if reg_arr[rs]<reg_arr[rt]:
             reg_arr[rd]=1
+            print("Branch in progress...")
         else:
             reg_arr[rd]=0
+            print("No branch necessary")
+        print("RD: ", reg_arr[rd])
     elif op[0:6]=="100011":
         print("LW")
         #load word
@@ -187,7 +200,10 @@ def sim(MIPS_HEX):
         print("OP: ", op)
         print("Register Array:", reg_arr)#prints for each instruction so we can see what is being stored in each register
         print("Cycle:", cycle)
+        print("\n")
         dic+=1 #increment DIC by 1 everytime we perform an instruction
+        if x>1000:
+            break
 
     print("Dynmic Instruction Count: ", dic)
     print("Single Cycle Count:       ", cycle[0])
@@ -197,6 +213,14 @@ def sim(MIPS_HEX):
     print("Count 5 Step Cycles:      ", cycle[5])
     cycle[2]+=4
     print("Pipeline Cycle count:     ", cycle[2])
+    print("Below is a listing of the final values for each register: \n")
+    print("$1 = ", reg_arr[1])
+    print("$2 = ", reg_arr[2])
+    print("$3 = ", reg_arr[3])
+    print("$4 = ", reg_arr[4])
+    print("$5 = ", reg_arr[5])
+    print("$6 = ", reg_arr[6])
+    print("$7 = ", reg_arr[7])
 
 
 sim("i_mem.txt")
