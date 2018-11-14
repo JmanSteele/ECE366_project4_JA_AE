@@ -32,17 +32,18 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         reg_arr[rd]=int(reg_arr[rs]) + int(reg_arr[rt])
         print("The result stored in Register RD is: ", reg_arr[rd])
         pc+=4
-        cycle[0]+=1
-        cycle[1]+=4
-        cycle[2]+=1
-        cycle[4]+=1
+        cycle[0]+=1    #single cycle
+        cycle[1]+=4    #multi cycle
+        cycle[2]+=1    #pipeline
+        cycle[4]+=1    #4 steps
         x+=1
         print("X:", x)
     elif op[0:32]=="00010000000000001111111111111111":
         x+=10000
-        cycle[0]+=1
-        cycle[1]+=3
-        cycle[2]+=2
+        cycle[0]+=1    #single cycle
+        cycle[1]+=3    #multi cycle
+        cycle[2]+=2    #pipeline
+        cycle[3]+=1    #3 step
     elif op[0:6]=="001000":
         #addi instruction
         print("ADDI")
@@ -92,9 +93,9 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         #Branch instruction
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
-        cycle[0]+=1
-        cycle[1]+=3
-        cycle[3]+=1
+        cycle[0]+=1   #single cycle
+        cycle[1]+=3   #multi cycle
+        cycle[3]+=1   #3 steps
         if op[16]=="1":
             offset = -(65535 -int(op[16:32],2)+1)
             print("offset when MSB is 1: ", offset)
@@ -103,7 +104,8 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         print("OFFset: ", int(offset))
         if reg_arr[rs]==reg_arr[rt]:
             pc=pc+(int(offset)*4)
-            cycle[2]+=2
+            cycle[2]+=2   #stall for branch so pipeline increases by 2
+            x+=1
             x+=int(offset)
         else:
             pc+=4
@@ -135,18 +137,18 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         print("RT: $", rt)
         rd=int(op[16:21], 2)
         print("RD: $", rd)
-        cycle[0]+=1
-        cycle[1]+=4
-        cycle[2]+=1
-        cycle[4]+=1
+        cycle[0]+=1    #single cycle
+        cycle[1]+=4    #multi cycle
+        cycle[2]+=1    #pipeline
+        cycle[4]+=1    #step 4
         pc+=4
         x+=1
         if reg_arr[rs]<reg_arr[rt]:
             reg_arr[rd]=1
-            print("Branch in progress...")
+            print("No Branch necessary")
         else:
             reg_arr[rd]=0
-            print("No branch necessary")
+            print("Branch in progress...")
         print("RD: ", reg_arr[rd])
     elif op[0:6]=="100011":
         print("LW")
@@ -200,8 +202,9 @@ def sim(MIPS_HEX):
         print("OP: ", op)
         print("Register Array:", reg_arr)#prints for each instruction so we can see what is being stored in each register
         print("Cycle:", cycle)
-        print("\n")
         dic+=1 #increment DIC by 1 everytime we perform an instruction
+        print("DIC: ", dic)
+        print("\n")
         if x>1000:
             break
 
