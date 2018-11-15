@@ -166,9 +166,9 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
         offset=int(op[16:32], 2)
-        reg_arr[rs]+=offset    #move register across memory by offset to access value
-        reg_arr[rt]=reg_arr[rs]#set register rt equal to whatever value rs obtains from memorys
-        pc+=4
+        print("offset", offset)
+        print("Register and its value: register", rt, reg_arr[rt])
+        reg_arr[rt]=memREE[offset+reg_arr[rs]-8912]
         cycle[0]+=1
         cycle[1]+=5
         cycle[2]+=2
@@ -179,9 +179,12 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         #store word
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
+        print("Register and its value: register", rt, reg_arr[rt])
         offset=int(op[16:32], 2)
-        reg_arr[rs]+=offset
-        reg_arr[rs]=reg_arr[rt]
+        print("Offset: ", offset)
+        kk=offset+reg_arr[rs]-8192
+        print("memory location: ", kk)
+        memREE[offset+reg_arr[rs]-8192]=reg_arr[rt]
         pc+=4
         cycle[0]+=1
         cycle[1]+=4
@@ -235,7 +238,7 @@ def sim(MIPS_HEX):
     print("$6 = ", reg_arr[6])
     print("$7 = ", reg_arr[7])
 
-
+memREE = [None]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 print("\n\n\n\n\n\n\n\n")
 sim("sample_a.txt")
