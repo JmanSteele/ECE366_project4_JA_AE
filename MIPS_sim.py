@@ -4,7 +4,6 @@ print("ECE 366 Project 4 MIPS simulator")
 #file_reader reads each line of a file in an array as elements
 #input: file -- read MIPS instruction
 #outputs: filing
-import time
 import math
 def file_to_array(file):
     return_array = []
@@ -24,9 +23,9 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         #add instruction
         print("ADD")
         rs=int(op[6:11], 2)
-        print("RS register: $", rs)
+        print("RS register: $", rs, int(reg_arr[rs]))
         rt=int(op[11:16], 2)
-        print("RT register: $", rt) 
+        print("RT register: $", rt, int(reg_arr[rt])) 
         rd=int(op[16:21], 2)
         print("RD register: $", rd)
         reg_arr[rd]=int(reg_arr[rs]) + int(reg_arr[rt])
@@ -38,7 +37,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         cycle[4]+=1    #4 steps
         x+=1
         print("X:", x)
-    elif op[0:32]=="00010000000000001111111111111111":
+    elif op[0:16]=="0001000000000000":   #for ending the program beq $0, $0, whatever
         x+=10000
         cycle[0]+=1    #single cycle
         cycle[1]+=3    #multi cycle
@@ -66,9 +65,13 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         print("SUB")
         #sub instruction
         rs=int(op[6:11], 2)
+        print("RS: ", rs)
         rt=int(op[11:16], 2)
+        print("RT: ", rt)
         rd=int(op[16:21], 2)
+        print("RD: ", rd)
         reg_arr[rd]=int(reg_arr[rs]) - int(reg_arr[rt])
+        print("Result: ", reg_arr[rd])
         pc+=4
         cycle[0]+=1
         cycle[1]+=4
@@ -79,9 +82,13 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         print("XOR")
         #xor instruction
         rs=int(op[6:11], 2)
+        print("RS: ", rs, reg_arr[rs], bin(reg_arr[rs]))
         rt=int(op[11:16], 2)
+        print("RT: ", rt, reg_arr[rt], bin(reg_arr[rt]))
         rd=int(op[16:21], 2)
+        print("RD: ", rd)
         reg_arr[rd]=int(reg_arr[rs]) ^ int(reg_arr[rt])
+        print("Result: ", reg_arr[rd], bin(reg_arr[rd]))
         pc+=4
         cycle[0]+=1
         cycle[1]+=4
@@ -92,7 +99,9 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         print("BEQ")
         #Branch instruction
         rs=int(op[6:11], 2)
+        print("RS: ", rs)
         rt=int(op[11:16], 2)
+        print("RT: ", rt)
         cycle[0]+=1   #single cycle
         cycle[1]+=3   #multi cycle
         cycle[3]+=1   #3 steps
@@ -194,7 +203,7 @@ def sim(MIPS_HEX):
     dic=0   #dynamic instruction will be counted
     while x < len(instr_mem):
         op = instr_mem[x]
-        print("PC: ", pc)
+        print("PC: ", pc, hex(pc))
         data_set = execute_operation(op, reg_arr, pc, cycle, x)
         reg_arr = data_set[1]
         pc=data_set[2]
@@ -227,4 +236,6 @@ def sim(MIPS_HEX):
     print("$7 = ", reg_arr[7])
 
 
-sim("i_mem.txt")
+#sim("i_mem.txt")
+print("\n\n\n\n\n\n\n\n")
+sim("sample_a.txt")
