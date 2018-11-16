@@ -49,7 +49,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
         imm = int(op[16:32], 2)
-        if( imm & 0x8000) !=0:
+        if( imm & 0x8000) !=0:  #checks if last bit is 1
             imm = imm - 0x10000
         print("RS: $", rs)
         print("RT: $", rt)
