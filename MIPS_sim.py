@@ -169,8 +169,8 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         rt=int(op[11:16], 2)
         offset=int(op[16:32], 2)
         print("offset", offset)
-        print("Register and its value: register", rt, reg_arr[rt])
-        reg_arr[rt]=memREE[offset+reg_arr[rs]-8912]
+        print("Register and its value: register", rs, reg_arr[rs]) #A.E instead of rt, should be rs
+        reg_arr[rt]=memREE[offset+reg_arr[rs]-8192]   #you put -8912, but should be -8192 lol 
         cycle[0]+=1
         cycle[1]+=5
         cycle[2]+=2
@@ -206,6 +206,10 @@ def sim(MIPS_HEX):
     instr_mem_input = open(MIPS_HEX, "r")#read file for programming instructions
     instr_mem = file_to_array(instr_mem_input)
     dic=0   #dynamic instruction will be counted
+    memREE[0] = 0 # A.E Starts with memory at location 0, be set at 0. 
+                  #When we do our first LOAD instrc. it wants to load from memory 
+                   # location 0, but theres a string "none", thats a problem. So now
+                 #it reads correctly. BEfore execution, does memory at 0 contain a value?
     while x < len(instr_mem):
         op = instr_mem[x]
         print("PC: ", pc, hex(pc))
