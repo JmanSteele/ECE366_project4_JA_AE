@@ -208,8 +208,7 @@ def sim(MIPS_HEX):
     dic=0   #dynamic instruction will be counted
     memREE[0] = 0 # A.E Starts with memory at location 0, be set at 0. 
                   #When we do our first LOAD instrc. it wants to load from memory 
-                   # location 0, but theres a string "none", thats a problem. So now
-                 #it reads correctly. BEfore execution, does memory at 0 contain a value?
+                   # location 0, but theres a string "none" where it should be an int type
     while x < len(instr_mem):
         op = instr_mem[x]
         print("PC: ", pc, hex(pc))
