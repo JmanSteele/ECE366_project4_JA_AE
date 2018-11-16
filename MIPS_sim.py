@@ -242,6 +242,17 @@ def sim(MIPS_HEX):
     print("$5 = ", reg_arr[5])
     print("$6 = ", reg_arr[6])
     print("$7 = ", reg_arr[7])
+    print("Memory: ...")
+    print("Mem0: ", memREE[0])  #Needs to be -39
+    print("Mem1: ", memREE[1])  #Needs to be 65
+    print("Mem2: ", memREE[2])  #Needs to be -31
+    print("Mem3: ", memREE[3])  #Needs to be 17
+    print("Mem4: ", memREE[4])  #Needs to be -7
+    print("Mem5: ", memREE[5])  #Needs to be 5
+    print("Mem6: ", memREE[6])  #needs to be -1
+    print("Mem7: ", memREE[7])  #Needs to be 2
+    #A.E Im comparing the results from MIPS executing final memory contants
+    #I'll work on this later so you wont have alot of work on your hands
 
 memREE = [None]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
