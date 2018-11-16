@@ -50,7 +50,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         rt=int(op[11:16], 2)
         imm = int(op[16:32], 2)
         if( imm & 0x8000) !=0:  #checks if last bit is 1
-            imm = imm - 0x10000
+            imm = imm - 0x10000 #if so, converts to negative int
         print("RS: $", rs)
         print("RT: $", rt)
         print("imm: ", imm)
