@@ -18,7 +18,7 @@ def file_to_array(file):
         return_array.append(line)
 
     return return_array
-def execute_operation(op, reg_arr, pc, cycle, x):
+def execute_operation(op, reg_arr, pc, cycle, x, percentage):
     if op[0:6]=="000000" and op[26:32]=="100000":
         #add instruction
         print("ADD")
@@ -31,10 +31,12 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         reg_arr[rd]=int(reg_arr[rs]) + int(reg_arr[rt])
         print("The result stored in Register RD is: ", reg_arr[rd])
         pc+=4
-        cycle[0]+=1    #single cycle
-        cycle[1]+=4    #multi cycle
-        cycle[2]+=1    #pipeline
-        cycle[4]+=1    #4 steps
+        cycle[0]+=1             #single cycle
+        cycle[1]+=4             #multi cycle
+        cycle[2]+=1             #pipeline
+        cycle[4]+=1             #4 steps
+        percentage[0]+=1     #ALU based instruction 
+        
         x+=1
         print("X:", x)
     elif op[0:16]=="0001000000000000":   #for ending the program beq $0, $0, whatever
@@ -44,7 +46,6 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         cycle[2]+=1    #pipeline
         cycle[3]+=1    #3 step
     elif op[0:6]=="001000":
-        #addi instruction
         print("ADDI")
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
@@ -57,10 +58,12 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         reg_arr[rt]=int(reg_arr[rs]) + imm
         print("Result stored in RT is :", reg_arr[rt])
         pc+=4
+        percentage[0]+=1     #ALU based instruction 
         cycle[0]+=1
         cycle[1]+=4
         cycle[2]+=1
         cycle[4]+=1
+        
         x+=1
         print("X: ", x)
     elif op[0:6]=="000000" and op[26:32]=="100010":
@@ -79,6 +82,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         cycle[1]+=4
         cycle[2]+=1
         cycle[4]+=1
+        percentage[0]+=1     #ALU based instruction 
         x+=1
     elif op[0:6]=="000000" and op[26:32]=="100110":
         print("XOR")
@@ -96,6 +100,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         cycle[1]+=4
         cycle[2]+=1
         cycle[4]+=1
+        percentage[0]+=1     #ALU based instruction 
         x+=1
     elif op[0:6]=="000100":
         print("BEQ")
@@ -107,6 +112,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         cycle[0]+=1   #single cycle
         cycle[1]+=3   #multi cycle
         cycle[3]+=1   #3 steps
+        percentage[1]+=1     #Branch based instruction 
         if op[16]=="1":
             offset = -(65535 -int(op[16:32],2)+1)
             print("offset when MSB is 1: ", offset)
@@ -132,6 +138,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         cycle[0]+=1
         cycle[1]+=3
         cycle[3]+=1
+        percentage[1]+=1     #Branch based instruction 
         if op[16]=="1":
             offset = -(65535 -int(op[16:32],2)+1)
             print("offset when MSB is 1: ", offset)
@@ -159,6 +166,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         cycle[1]+=4    #multi cycle
         cycle[2]+=2    #pipeline
         cycle[4]+=1    #step 4
+        percentage[0]+=1     #ALU based instruction 
         pc+=4
         x+=1
         if reg_arr[rs]<reg_arr[rt]:
@@ -183,6 +191,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         cycle[1]+=5
         cycle[2]+=2
         cycle[5]+=1
+        percentage[2]+=1     #Memory based instruction 
         x+=1
         pc+=4
     elif op[0:6]=="101011":
@@ -202,6 +211,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         cycle[1]+=4
         cycle[2]+=1
         cycle[4]+=1
+        percentage[2]+=1     #Memory based instruction
         x+=1
     return [op, reg_arr, pc, cycle, x]
 #sim: simulates the MIPS hex code
@@ -213,16 +223,16 @@ def sim(MIPS_HEX):
     reg_arr = [0, 0, 0, 0, 0, 0, 0, 0] #registers [$0, $1, $2, $3, $4, $5, $6, $7]
     cycle=[0, 0, 0, 0, 0, 0] #this array will work like so [single cycle, multi cycle, pipeline, 3cycle, 4cycle, 5cycle]
     #create file variables from file name strings
+    percentage=[0, 0, 0] #A.E. array for instct percentages [ALU, BRANCH, MEMORY] since JUMP and other
+                            #will always be zero since our program does not cover those
     instr_mem_input = open(MIPS_HEX, "r")#read file for programming instructions
     instr_mem = file_to_array(instr_mem_input)
     dic=0   #dynamic instruction will be counted
-    #memREE[0] = 0 # A.E Starts with memory at location 0, be set at 0. 
-                  #When we do our first LOAD instrc. it wants to load from memory 
-                   # location 0, but theres a string "none" where it should be an int type
+    
     while x < len(instr_mem):
         op = instr_mem[x]
         print("PC: ", pc, hex(pc))
-        data_set = execute_operation(op, reg_arr, pc, cycle, x)
+        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage)
         reg_arr = data_set[1]
         pc=data_set[2]
         cycle=data_set[3]
@@ -231,7 +241,7 @@ def sim(MIPS_HEX):
         print("Register Array:", reg_arr)#prints for each instruction so we can see what is being stored in each register
         print("Cycle:", cycle)
         dic+=1 #increment DIC by 1 everytime we perform an instruction
-        print("DIC: ", dic)
+        print("D.I.C: ", dic)
         print("\n")
         if x>1000:
             break
@@ -252,22 +262,25 @@ def sim(MIPS_HEX):
     print("$5 = ", reg_arr[5])
     print("$6 = ", reg_arr[6])
     print("$7 = ", reg_arr[7])
-    print("Memory: ...")
+    print("Memory display: ...")
     i=0
     for i in range(0, 2000, 4):
         if int(memREE[i]) != 0:
             print("Memory ",i,":" ,memREE[i], hex(memREE[i]))
+    print("---------------------------")
+    print("Instrution percentages")
+    print("ALU: ", int(100 *(percentage[0] / dic)), "%")
+    print("Jump: 0 %")
+    print("Branch: ", int(100 *(percentage[1] / dic)), "%")
+    print("Memory: ", int(100 *(percentage[2] / dic)), "%")
+    print("Other: 0 %")
+    
+    
     #A.E Im comparing the results from MIPS executing final memory contants
     #I'll work on this later so you wont have alot of work on your hands
 
 
     #############################################3
-    # Alberto,
-    # sample A works correctly now,
-    # if you notice I switched your memory locations
-    # instead of incremementing by 1, I had them incremement
-    # by 4, I think it works because remember in MIPS
-    # we save words which take up 4 spaces and not 1.
     # Also can you add conditional hazard counter for when we
     # compute $rd prior to instructions beq or bne?
     # for example:
@@ -278,16 +291,7 @@ def sim(MIPS_HEX):
     # notice how they both have $4 as their $rd
     # this will happen to all computations of $rd prior to checking branch
     # let's start checking sample's b c and d
-    # also i'm not sure if you want to add extra
-    # counters cause in Rao's project description
-    # it looks like she wants counters that'll produce percentages
-    # of the instructions that are based on ALU, jump, branch, memory, other
-    # my guess is our jumps will be zero because she did not have a j type
-    # instruction be mandatory for this project, not sure what "other" means,
-    # ALU is our add, addi, sub, xor, slt
-    # branch will just be beq, bne, and that one instruction i left that'll
-    # kill the program, also I believe the total will be our D.I.C.
-    # so for each of these counters divide them by the total.  Display the percentage.
+    
     # Lastly just compare our results from here with the results in MIPS
     # when you test samples b c and d.  After that we'll be done for the first week
     ###############################################
@@ -295,9 +299,9 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_a.txt")
+sim("sample_a.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_b.txt")
+#sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
