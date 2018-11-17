@@ -132,8 +132,14 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         cycle[0]+=1
         cycle[1]+=3
         cycle[3]+=1
+        if op[16]=="1":
+            offset = -(65535 -int(op[16:32],2)+1)
+            print("offset when MSB is 1: ", offset)
+        else:
+            offset=int(op[16:32], 2)
         if reg_arr[rs]!=reg_arr[rt]:
-            pc+=offset*4
+            pc+=4
+            pc=pc+(int(offset)*4)
             cycle[2]+=2
             x=x+1+offset
         else:
@@ -169,13 +175,16 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         rt=int(op[11:16], 2)
         offset=int(op[16:32], 2)
         print("offset", offset)
+        kk=reg_arr[rs]+offset-8192
+        print("memory: ", memREE[kk])
         print("Register and its value: register", rs, reg_arr[rs]) #A.E instead of rt, should be rs
-        reg_arr[rt]=memREE[offset+reg_arr[rs]-8192]   #you put -8912, but should be -8192 lol 
+        reg_arr[rt]=memREE[kk]   #you put -8912, but should be -8192 lol 
         cycle[0]+=1
         cycle[1]+=5
         cycle[2]+=2
         cycle[5]+=1
         x+=1
+        pc+=4
     elif op[0:6]=="101011":
         print("SW")
         #store word
@@ -187,6 +196,7 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         kk=offset+reg_arr[rs]-8192
         print("memory location: ", kk)
         memREE[offset+reg_arr[rs]-8192]=reg_arr[rt]
+        print("What got stored in memory?", memREE[kk])
         pc+=4
         cycle[0]+=1
         cycle[1]+=4
@@ -206,7 +216,7 @@ def sim(MIPS_HEX):
     instr_mem_input = open(MIPS_HEX, "r")#read file for programming instructions
     instr_mem = file_to_array(instr_mem_input)
     dic=0   #dynamic instruction will be counted
-    memREE[0] = 0 # A.E Starts with memory at location 0, be set at 0. 
+    #memREE[0] = 0 # A.E Starts with memory at location 0, be set at 0. 
                   #When we do our first LOAD instrc. it wants to load from memory 
                    # location 0, but theres a string "none" where it should be an int type
     while x < len(instr_mem):
@@ -244,17 +254,23 @@ def sim(MIPS_HEX):
     print("$7 = ", reg_arr[7])
     print("Memory: ...")
     print("Mem0: ", memREE[0])  #Needs to be -39
-    print("Mem1: ", memREE[1])  #Needs to be 65
-    print("Mem2: ", memREE[2])  #Needs to be -31
-    print("Mem3: ", memREE[3])  #Needs to be 17
-    print("Mem4: ", memREE[4])  #Needs to be -7
-    print("Mem5: ", memREE[5])  #Needs to be 5
-    print("Mem6: ", memREE[6])  #needs to be -1
-    print("Mem7: ", memREE[7])  #Needs to be 2
+    print("Mem1: ", memREE[4])  #Needs to be 65
+    print("Mem2: ", memREE[8])  #Needs to be -31
+    print("Mem3: ", memREE[12])  #Needs to be 17
+    print("Mem4: ", memREE[16])  #Needs to be -7
+    print("Mem5: ", memREE[20])  #Needs to be 5
+    print("Mem6: ", memREE[24])  #needs to be -1
+    print("Mem7: ", memREE[28])  #Needs to be 2
     #A.E Im comparing the results from MIPS executing final memory contants
     #I'll work on this later so you wont have alot of work on your hands
 
-memREE = [None]*4096 #initialize to list of 4096 none's
+memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
-print("\n\n\n\n\n\n\n\n")
+#print("\n\n\n\n\n\n\n\n")
 sim("sample_a.txt")
+#print("\n\n\n\n\n\n\n\n")
+#sim("sample_b.txt")
+#print("\n\n\n\n\n\n\n\n")
+#sim("sample_c.txt")
+#print("\n\n\n\n\n\n\n\n")
+#sim("sample_d.txt")
