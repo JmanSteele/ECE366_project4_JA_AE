@@ -272,6 +272,15 @@ def sim(MIPS_HEX):
     # instead of incremementing by 1, I had them incremement
     # by 4, I think it works because remember in MIPS
     # we save words which take up 4 spaces and not 1.
+    # Also can you add conditional hazard counter for when we
+    # compute $rd prior to instructions beq or bne?
+    # for example:
+    # add $4, $3, $2    <---delay right here because of $rd (needs to be fixed)
+    # beq $4, $0, somewhere    <---delay here if we DO branch (already taken care of)
+    # apparently there is a hazard directly after that add instruction
+    # when you compute the same $rd for beq
+    # notice how they both have $4 as their $rd
+    # this will happen to all computations of $rd prior to checking branch
     # let's start checking sample's b c and d
     # also i'm not sure if you want to add extra
     # counters cause in Rao's project description
