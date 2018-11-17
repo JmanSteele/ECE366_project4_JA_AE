@@ -175,10 +175,10 @@ def execute_operation(op, reg_arr, pc, cycle, x):
         rt=int(op[11:16], 2)
         offset=int(op[16:32], 2)
         print("offset", offset)
-        kk=reg_arr[rs]+offset-8192
+        kk=reg_arr[rs]+offset-8192 #you put -8912, but should be -8192 lol
         print("memory: ", memREE[kk])
         print("Register and its value: register", rs, reg_arr[rs]) #A.E instead of rt, should be rs
-        reg_arr[rt]=memREE[kk]   #you put -8912, but should be -8192 lol 
+        reg_arr[rt]=memREE[kk]    
         cycle[0]+=1
         cycle[1]+=5
         cycle[2]+=2
@@ -263,6 +263,29 @@ def sim(MIPS_HEX):
     print("Mem7: ", memREE[28])  #Needs to be 2
     #A.E Im comparing the results from MIPS executing final memory contants
     #I'll work on this later so you wont have alot of work on your hands
+
+
+    #############################################3
+    # Alberto,
+    # sample A works correctly now,
+    # if you notice I switched your memory locations
+    # instead of incremementing by 1, I had them incremement
+    # by 4, I think it works because remember in MIPS
+    # we save words which take up 4 spaces and not 1.
+    # let's start checking sample's b c and d
+    # also i'm not sure if you want to add extra
+    # counters cause in Rao's project description
+    # it looks like she wants counters that'll produce percentages
+    # of the instructions that are based on ALU, jump, branch, memory, other
+    # my guess is our jumps will be zero because she did not have a j type
+    # instruction be mandatory for this project, not sure what "other" means,
+    # ALU is our add, addi, sub, xor, slt
+    # branch will just be beq, bne, and that one instruction i left that'll
+    # kill the program, also I believe the total will be our D.I.C.
+    # so for each of these counters divide them by the total.  Display the percentage.
+    # Lastly just compare our results from here with the results in MIPS
+    # when you test samples b c and d.  After that we'll be done for the first week
+    ###############################################
 
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
