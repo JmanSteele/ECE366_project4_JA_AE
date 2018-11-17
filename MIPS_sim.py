@@ -269,10 +269,10 @@ def sim(MIPS_HEX):
             print("Memory ",i,":" ,memREE[i], hex(memREE[i]))
     print("---------------------------")
     print("Instrution percentages")
-    print("ALU: ", int(100 *(percentage[0] / dic)), "%")
+    print("ALU: ", round(100 *(percentage[0] / dic)), "%")
     print("Jump: 0 %")
-    print("Branch: ", int(100 *(percentage[1] / dic)), "%")
-    print("Memory: ", int(100 *(percentage[2] / dic)), "%")
+    print("Branch: ", round(100 *(percentage[1] / dic)), "%")
+    print("Memory: ", round(100 *(percentage[2] / dic)), "%")
     print("Other: 0 %")
 
     #############################################3
