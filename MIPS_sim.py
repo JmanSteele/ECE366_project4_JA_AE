@@ -274,11 +274,6 @@ def sim(MIPS_HEX):
     print("Branch: ", int(100 *(percentage[1] / dic)), "%")
     print("Memory: ", int(100 *(percentage[2] / dic)), "%")
     print("Other: 0 %")
-    
-    
-    #A.E Im comparing the results from MIPS executing final memory contants
-    #I'll work on this later so you wont have alot of work on your hands
-
 
     #############################################3
     # Also can you add conditional hazard counter for when we
