@@ -18,9 +18,8 @@ def file_to_array(file):
         return_array.append(line)
 
     return return_array
-def execute_operation(op, reg_arr, pc, cycle, x, percentage):
+def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
     if op[0:6]=="000000" and op[26:32]=="100000":
-        #add instruction
         print("ADD")
         rs=int(op[6:11], 2)
         print("RS register: $", rs, int(reg_arr[rs]))
@@ -35,7 +34,9 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage):
         cycle[1]+=4             #multi cycle
         cycle[2]+=1             #pipeline
         cycle[4]+=1             #4 steps
-        percentage[0]+=1     #ALU based instruction 
+        percentage[0]+=1     #ALU based instruction
+        hazard[0] = rd          #storing register value rt
+        hazard[1] = dic         #storing dic value
         
         x+=1
         print("X:", x)
@@ -45,6 +46,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage):
         cycle[1]+=3    #multi cycle
         cycle[2]+=1    #pipeline
         cycle[3]+=1    #3 step
+        percentage[3]+=1
     elif op[0:6]=="001000":
         print("ADDI")
         rs=int(op[6:11], 2)
@@ -63,12 +65,12 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage):
         cycle[1]+=4
         cycle[2]+=1
         cycle[4]+=1
-        
+        hazard[0] = rt          #storing register value rt
+        hazard[1] = dic         #storing dic value   
         x+=1
         print("X: ", x)
     elif op[0:6]=="000000" and op[26:32]=="100010":
         print("SUB")
-        #sub instruction
         rs=int(op[6:11], 2)
         print("RS: ", rs)
         rt=int(op[11:16], 2)
@@ -82,11 +84,12 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage):
         cycle[1]+=4
         cycle[2]+=1
         cycle[4]+=1
-        percentage[0]+=1     #ALU based instruction 
+        percentage[0]+=1     #ALU based instruction
+        hazard[0] = rt          #storing register value rt
+        hazard[1] = dic         #storing dic value
         x+=1
     elif op[0:6]=="000000" and op[26:32]=="100110":
         print("XOR")
-        #xor instruction
         rs=int(op[6:11], 2)
         print("RS: ", rs, reg_arr[rs], bin(reg_arr[rs]))
         rt=int(op[11:16], 2)
@@ -100,11 +103,12 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage):
         cycle[1]+=4
         cycle[2]+=1
         cycle[4]+=1
-        percentage[0]+=1     #ALU based instruction 
+        percentage[0]+=1     #ALU based instruction
+        hazard[0] = rt          #storing register value rt
+        hazard[1] = dic         #storing dic value
         x+=1
     elif op[0:6]=="000100":
         print("BEQ")
-        #Branch instruction
         rs=int(op[6:11], 2)
         print("RS: ", rs)
         rt=int(op[11:16], 2)
@@ -112,7 +116,10 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage):
         cycle[0]+=1   #single cycle
         cycle[1]+=3   #multi cycle
         cycle[3]+=1   #3 steps
-        percentage[1]+=1     #Branch based instruction 
+        percentage[1]+=1     #Branch based instruction
+        if hazard[0] == rt:
+            if dic == hazard[1] + 1:
+                hazard[2]+=1
         if op[16]=="1":
             offset = -(65535 -int(op[16:32],2)+1)
             print("offset when MSB is 1: ", offset)
@@ -131,14 +138,16 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage):
             x+=1
     elif op[0:6]=="000101":
         print("BNE")
-        #branch if not equal to instruction
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
         offset=int(op[16:32], 2)
         cycle[0]+=1
         cycle[1]+=3
         cycle[3]+=1
-        percentage[1]+=1     #Branch based instruction 
+        percentage[1]+=1     #Branch based instruction
+        if hazard[0] == rt:
+            if dic == hazard[1] + 1:
+                hazard[2]+=1
         if op[16]=="1":
             offset = -(65535 -int(op[16:32],2)+1)
             print("offset when MSB is 1: ", offset)
@@ -155,7 +164,6 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage):
             x+=1
     elif op[0:6]=="000000" and op[26:32]=="101010":
         print("SLT")
-        #set less than
         rs=int(op[6:11], 2)
         print("RS: $", rs)
         rt=int(op[11:16], 2)
@@ -178,7 +186,6 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage):
         print("RD: ", reg_arr[rd])
     elif op[0:6]=="100011":
         print("LW")
-        #load word
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
         offset=int(op[16:32], 2)
@@ -196,7 +203,6 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage):
         pc+=4
     elif op[0:6]=="101011":
         print("SW")
-        #store word
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
         print("Register and its value: register", rt, reg_arr[rt])
@@ -223,8 +229,10 @@ def sim(MIPS_HEX):
     reg_arr = [0, 0, 0, 0, 0, 0, 0, 0] #registers [$0, $1, $2, $3, $4, $5, $6, $7]
     cycle=[0, 0, 0, 0, 0, 0] #this array will work like so [single cycle, multi cycle, pipeline, 3cycle, 4cycle, 5cycle]
     #create file variables from file name strings
-    percentage=[0, 0, 0] #A.E. array for instct percentages [ALU, BRANCH, MEMORY] since JUMP and other
-                            #will always be zero since our program does not cover those
+    percentage=[0, 0, 0, 0] #A.E. array for instct percentages [ALU, BRANCH, MEMORY, other] since JUMP
+                            #will always be zero since our program does not cover that instr
+    hazard=[0,0,0]      #A.E. [$RD, PC, HazardCount]
+    hazard[2] = 0
     instr_mem_input = open(MIPS_HEX, "r")#read file for programming instructions
     instr_mem = file_to_array(instr_mem_input)
     dic=0   #dynamic instruction will be counted
@@ -232,7 +240,7 @@ def sim(MIPS_HEX):
     while x < len(instr_mem):
         op = instr_mem[x]
         print("PC: ", pc, hex(pc))
-        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage)
+        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic)
         reg_arr = data_set[1]
         pc=data_set[2]
         cycle=data_set[3]
@@ -268,29 +276,16 @@ def sim(MIPS_HEX):
     for i in range(0, 2000, 4):
         if int(memREE[i]) != 0:
             print("Memory ",i,":" '%8s' % memREE[i],'%20s' % hex(abs(memREE[i])))
-    print("---------------------------")
+    print("--------------------------------")
     print("Instrution percentages")
     print("ALU:", '%10s' % round(100 *(percentage[0] / dic)), "%")
     print("Jump:" '%10s' % "0%")
     print("Branch:", '%7s' % round(100 *(percentage[1] / dic)), "%")
     print("Memory:", '%7s' % round(100 *(percentage[2] / dic)), "%")
-    print("Other:" '%9s' % "0%")
+    print("Other:" '%9s' % round(100 *(percentage[3] / dic)), "%")
+    print("--------------------------------")
+    print("Hazard count: ", hazard[2])
 
-    #############################################3
-    # Also can you add conditional hazard counter for when we
-    # compute $rd prior to instructions beq or bne?
-    # for example:
-    # add $4, $3, $2    <---delay right here because of $rd (needs to be fixed)
-    # beq $4, $0, somewhere    <---delay here if we DO branch (already taken care of)
-    # apparently there is a hazard directly after that add instruction
-    # when you compute the same $rd for beq
-    # notice how they both have $4 as their $rd
-    # this will happen to all computations of $rd prior to checking branch
-    # let's start checking sample's b c and d
-    
-    # Lastly just compare our results from here with the results in MIPS
-    # when you test samples b c and d.  After that we'll be done for the first week
-    ###############################################
 
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
