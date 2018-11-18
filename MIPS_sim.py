@@ -247,6 +247,7 @@ def sim(MIPS_HEX):
             break
 
     print("Dynmic Instruction Count: ", dic)
+    print("PC: ", pc)
     print("Single Cycle Count:       ", cycle[0])
     print("Multi Cycle Count:        ", cycle[1])
     print("Count 3 Step Cycles:      ", cycle[3])
@@ -266,14 +267,14 @@ def sim(MIPS_HEX):
     i=0
     for i in range(0, 2000, 4):
         if int(memREE[i]) != 0:
-            print("Memory ",i,":" ,memREE[i], hex(memREE[i]))
+            print("Memory ",i,":" '%8s' % memREE[i],'%20s' % hex(abs(memREE[i])))
     print("---------------------------")
     print("Instrution percentages")
-    print("ALU: ", round(100 *(percentage[0] / dic)), "%")
-    print("Jump: 0 %")
-    print("Branch: ", round(100 *(percentage[1] / dic)), "%")
-    print("Memory: ", round(100 *(percentage[2] / dic)), "%")
-    print("Other: 0 %")
+    print("ALU:", '%10s' % round(100 *(percentage[0] / dic)), "%")
+    print("Jump:" '%10s' % "0%")
+    print("Branch:", '%7s' % round(100 *(percentage[1] / dic)), "%")
+    print("Memory:", '%7s' % round(100 *(percentage[2] / dic)), "%")
+    print("Other:" '%9s' % "0%")
 
     #############################################3
     # Also can you add conditional hazard counter for when we
@@ -294,10 +295,10 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_a.txt")
+#sim("sample_a.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_d.txt")
+sim("sample_d.txt")
