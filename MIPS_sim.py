@@ -27,6 +27,8 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         print("RT register: $", rt, int(reg_arr[rt])) 
         rd=int(op[16:21], 2)
         print("RD register: $", rd)
+        hazard[0] = rd          #storing register value rt
+        hazard[1] = dic         #storing dic value
         reg_arr[rd]=int(reg_arr[rs]) + int(reg_arr[rt])
         print("The result stored in Register RD is: ", reg_arr[rd])
         pc+=4
@@ -35,8 +37,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[2]+=1             #pipeline
         cycle[4]+=1             #4 steps
         percentage[0]+=1     #ALU based instruction
-        hazard[0] = rd          #storing register value rt
-        hazard[1] = dic         #storing dic value
+        
         
         x+=1
         print("X:", x)
@@ -52,6 +53,8 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
         imm = int(op[16:32], 2)
+        hazard[0] = rt          #storing register value rt
+        hazard[1] = dic         #storing dic value   
         if( imm & 0x8000) !=0:  #checks if last bit is 1
             imm = imm - 0x10000 #if so, converts to negative int
         print("RS: $", rs)
@@ -65,8 +68,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[1]+=4
         cycle[2]+=1
         cycle[4]+=1
-        hazard[0] = rt          #storing register value rt
-        hazard[1] = dic         #storing dic value   
+        
         x+=1
         print("X: ", x)
     elif op[0:6]=="000000" and op[26:32]=="100010":
@@ -77,6 +79,8 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         print("RT: ", rt)
         rd=int(op[16:21], 2)
         print("RD: ", rd)
+        hazard[0] = rt          #storing register value rt
+        hazard[1] = dic         #storing dic value
         reg_arr[rd]=int(reg_arr[rs]) - int(reg_arr[rt])
         print("Result: ", reg_arr[rd])
         pc+=4
@@ -85,8 +89,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[2]+=1
         cycle[4]+=1
         percentage[0]+=1     #ALU based instruction
-        hazard[0] = rt          #storing register value rt
-        hazard[1] = dic         #storing dic value
+        
         x+=1
     elif op[0:6]=="000000" and op[26:32]=="100110":
         print("XOR")
@@ -96,6 +99,8 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         print("RT: ", rt, reg_arr[rt], bin(reg_arr[rt]))
         rd=int(op[16:21], 2)
         print("RD: ", rd)
+        hazard[0] = rt          #storing register value rt
+        hazard[1] = dic         #storing dic value
         reg_arr[rd]=int(reg_arr[rs]) ^ int(reg_arr[rt])
         print("Result: ", reg_arr[rd], bin(reg_arr[rd]))
         pc+=4
@@ -104,8 +109,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[2]+=1
         cycle[4]+=1
         percentage[0]+=1     #ALU based instruction
-        hazard[0] = rt          #storing register value rt
-        hazard[1] = dic         #storing dic value
+    
         x+=1
     elif op[0:6]=="000100":
         print("BEQ")
@@ -117,7 +121,9 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[1]+=3   #multi cycle
         cycle[3]+=1   #3 steps
         percentage[1]+=1     #Branch based instruction
-        if hazard[0] == rt:
+        print("---------------------Addi rt:", hazard[0])
+        print("---------------------BEQ rt: ", rs)
+        if hazard[0] == rs:
             if dic == hazard[1] + 1:
                 hazard[2]+=1
         if op[16]=="1":
@@ -251,6 +257,7 @@ def sim(MIPS_HEX):
         dic+=1 #increment DIC by 1 everytime we perform an instruction
         print("D.I.C: ", dic)
         print("\n")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!! Hazard: ", hazard[2])
         if x>1000:
             break
 
