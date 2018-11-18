@@ -27,8 +27,9 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         print("RT register: $", rt, int(reg_arr[rt])) 
         rd=int(op[16:21], 2)
         print("RD register: $", rd)
-        hazard[0] = rd          #storing register value rt
-        hazard[1] = dic         #storing dic value
+        hazard[0] = rd          #storing register value rd
+        hazard[1] = dic         #storing dic value to compare to BEQ/BNE dic value
+                                #must differ by 1 dic to signify hazard, immediate use
         reg_arr[rd]=int(reg_arr[rs]) + int(reg_arr[rt])
         print("The result stored in Register RD is: ", reg_arr[rd])
         pc+=4
@@ -79,7 +80,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         print("RT: ", rt)
         rd=int(op[16:21], 2)
         print("RD: ", rd)
-        hazard[0] = rt          #storing register value rt
+        hazard[0] = rd          #storing register value rt
         hazard[1] = dic         #storing dic value
         reg_arr[rd]=int(reg_arr[rs]) - int(reg_arr[rt])
         print("Result: ", reg_arr[rd])
@@ -99,7 +100,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         print("RT: ", rt, reg_arr[rt], bin(reg_arr[rt]))
         rd=int(op[16:21], 2)
         print("RD: ", rd)
-        hazard[0] = rt          #storing register value rt
+        hazard[0] = rd          #storing register value rt
         hazard[1] = dic         #storing dic value
         reg_arr[rd]=int(reg_arr[rs]) ^ int(reg_arr[rt])
         print("Result: ", reg_arr[rd], bin(reg_arr[rd]))
@@ -121,8 +122,8 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[1]+=3   #multi cycle
         cycle[3]+=1   #3 steps
         percentage[1]+=1     #Branch based instruction
-        print("---------------------Addi rt:", hazard[0])
-        print("---------------------BEQ rt: ", rs)
+        print("---------------------Previous $", hazard[0])
+        print("---------------------BEQ      $", rs)
         if hazard[0] == rs:
             if dic == hazard[1] + 1:
                 hazard[2]+=1
@@ -151,9 +152,13 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[1]+=3
         cycle[3]+=1
         percentage[1]+=1     #Branch based instruction
-        if hazard[0] == rt:
-            if dic == hazard[1] + 1:
+        print("---------------------Previous $", hazard[0])
+        print("---------------------BEQ      $", rs)
+        if hazard[0] == rs:
+            if dic == hazard[1] + 1:   #check if same register is being accessed ONE
+                                        #instr after
                 hazard[2]+=1
+    
         if op[16]=="1":
             offset = -(65535 -int(op[16:32],2)+1)
             print("offset when MSB is 1: ", offset)
@@ -257,7 +262,7 @@ def sim(MIPS_HEX):
         dic+=1 #increment DIC by 1 everytime we perform an instruction
         print("D.I.C: ", dic)
         print("\n")
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!! Hazard: ", hazard[2])
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards: ", hazard[2])
         if x>1000:
             break
 
@@ -269,7 +274,8 @@ def sim(MIPS_HEX):
     print("Count 4 Step Cycles:      ", cycle[4])
     print("Count 5 Step Cycles:      ", cycle[5])
     cycle[2]+=4
-    print("Pipeline Cycle count:     ", cycle[2])
+    sum2 = hazard[2] + cycle[2]
+    print("Pipeline Cycle count:     ", cycle[2], " + ", hazard[2], " hazards =", sum2)
     print("Below is a listing of the final values for each register: \n")
     print("$1 = ", reg_arr[1])
     print("$2 = ", reg_arr[2])
@@ -290,8 +296,7 @@ def sim(MIPS_HEX):
     print("Branch:", '%7s' % round(100 *(percentage[1] / dic)), "%")
     print("Memory:", '%7s' % round(100 *(percentage[2] / dic)), "%")
     print("Other:" '%9s' % round(100 *(percentage[3] / dic)), "%")
-    print("--------------------------------")
-    print("Hazard count: ", hazard[2])
+    
 
 
 memREE = [0]*4096 #initialize to list of 4096 none's
