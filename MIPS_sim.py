@@ -306,6 +306,6 @@ memREE = [0]*4096 #initialize to list of 4096 none's
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_c.txt")
+sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_d.txt")
+#sim("sample_d.txt")
