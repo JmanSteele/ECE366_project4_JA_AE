@@ -4,6 +4,7 @@ print("ECE 366 Project 4 MIPS simulator")
 #file_reader reads each line of a file in an array as elements
 #input: file -- read MIPS instruction
 #outputs: filing
+
 import math
 def file_to_array(file):
     return_array = []
@@ -38,10 +39,9 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[2]+=1             #pipeline
         cycle[4]+=1             #4 steps
         percentage[0]+=1     #ALU based instruction
-        
-        
         x+=1
         print("X:", x)
+        
     elif op[0:16]=="0001000000000000":   #for ending the program beq $0, $0, whatever
         x+=10000
         cycle[0]+=1    #single cycle
@@ -49,6 +49,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[2]+=1    #pipeline
         cycle[3]+=1    #3 step
         percentage[3]+=1
+        
     elif op[0:6]=="001000":
         print("ADDI")
         rs=int(op[6:11], 2)
@@ -69,9 +70,9 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[1]+=4
         cycle[2]+=1
         cycle[4]+=1
-        
         x+=1
         print("X: ", x)
+        
     elif op[0:6]=="000000" and op[26:32]=="100010":
         print("SUB")
         rs=int(op[6:11], 2)
@@ -90,8 +91,8 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[2]+=1
         cycle[4]+=1
         percentage[0]+=1     #ALU based instruction
-        
         x+=1
+        
     elif op[0:6]=="000000" and op[26:32]=="100110":
         print("XOR")
         rs=int(op[6:11], 2)
@@ -109,9 +110,9 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[1]+=4
         cycle[2]+=1
         cycle[4]+=1
-        percentage[0]+=1     #ALU based instruction
-    
+        percentage[0]+=1     #ALU based instruction 
         x+=1
+        
     elif op[0:6]=="000100":
         print("BEQ")
         rs=int(op[6:11], 2)
@@ -247,7 +248,7 @@ def sim(MIPS_HEX):
     instr_mem_input = open(MIPS_HEX, "r")#read file for programming instructions
     instr_mem = file_to_array(instr_mem_input)
     dic=0   #dynamic instruction will be counted
-    
+    i=1      #used to printout hazards when ever they occur
     while x < len(instr_mem):
         op = instr_mem[x]
         print("PC: ", pc, hex(pc))
@@ -262,12 +263,14 @@ def sim(MIPS_HEX):
         dic+=1 #increment DIC by 1 everytime we perform an instruction
         print("D.I.C: ", dic)
         print("\n")
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards: ", hazard[2])
+        
+        if(i == hazard[2]):
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards: ", hazard[2])
+            i+=1
         if x>1000:
             break
 
-    print("Dynmic Instruction Count: ", dic)
-    print("PC: ", pc)
+    print("Dynmic Instruction Count: ", dic, "\nPC: ", pc)
     print("Single Cycle Count:       ", cycle[0])
     print("Multi Cycle Count:        ", cycle[1])
     print("Count 3 Step Cycles:      ", cycle[3])
@@ -277,12 +280,8 @@ def sim(MIPS_HEX):
    
     print("Pipeline Cycle count:     ", hazard[2]+cycle[2])
     print("Below is a listing of the final values for each register: \n")
-    print("$1 = ", reg_arr[1])
-    print("$2 = ", reg_arr[2])
-    print("$3 = ", reg_arr[3])
-    print("$4 = ", reg_arr[4])
-    print("$5 = ", reg_arr[5])
-    print("$6 = ", reg_arr[6])
+    print("$1 = ", reg_arr[1], "\n$2 = ",reg_arr[2], "\n$3 = "reg_arr[3])
+    print("$4 = ", reg_arr[4], "\n$5 = ", reg_arr[5], "\n$6 = ", reg_arr[6])
     print("$7 = ", reg_arr[7])
     print("Memory display: ...")
     i=0
@@ -296,8 +295,6 @@ def sim(MIPS_HEX):
     print("Branch:", '%7s' % round(100 *(percentage[1] / dic)), "%")
     print("Memory:", '%7s' % round(100 *(percentage[2] / dic)), "%")
     print("Other:" '%9s' % round(100 *(percentage[3] / dic)), "%")
-    
-
 
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
@@ -306,6 +303,6 @@ memREE = [0]*4096 #initialize to list of 4096 none's
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_c.txt")
+#sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_d.txt")
+sim("sample_d.txt")
