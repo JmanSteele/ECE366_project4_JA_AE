@@ -280,12 +280,12 @@ def sim(MIPS_HEX):
    
     print("Pipeline Cycle count:     ", hazard[2]+cycle[2])
     print("Below is a listing of the final values for each register: \n")
-    print("$1 = ", reg_arr[1], "\n$2 = ",reg_arr[2], "\n$3 = "reg_arr[3])
+    print("$1 = ", reg_arr[1], "\n$2 = ",reg_arr[2], "\n$3 = ",reg_arr[3])
     print("$4 = ", reg_arr[4], "\n$5 = ", reg_arr[5], "\n$6 = ", reg_arr[6])
     print("$7 = ", reg_arr[7])
     print("Memory display: ...")
     i=0
-    for i in range(0, 2000, 4):
+    for i in range(0, 4096, 4):
         if int(memREE[i]) != 0:
             print("Memory ",i,":" '%8s' % memREE[i],'%20s' % hex(abs(memREE[i])))
     print("--------------------------------")
