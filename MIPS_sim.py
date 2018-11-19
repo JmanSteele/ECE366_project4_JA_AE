@@ -275,7 +275,7 @@ def sim(MIPS_HEX):
     print("Count 5 Step Cycles:      ", cycle[5])
     cycle[2]+=4
    
-    print("Pipeline Cycle count:     ", hazard[2])
+    print("Pipeline Cycle count:     ", hazard[2]+cycle[2])
     print("Below is a listing of the final values for each register: \n")
     print("$1 = ", reg_arr[1])
     print("$2 = ", reg_arr[2])
