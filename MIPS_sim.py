@@ -6,6 +6,27 @@ print("ECE 366 Project 4 MIPS simulator")
 #outputs: filing
 
 import math
+
+#cache functions go here---------------------------------------
+#def cache_me000ousside(
+    #part 3 a
+    #initialize blocks to be 4 words by somehow going through array for every
+    #16 memory location since 16/4 will be 4 words...range(0, 4096, 16)??
+    #output the block name (1 or 2)
+    #output the tag
+    #if block gets overwritten it will be miss so we probably need a flag
+    #that is a global variable
+    #Q: how do we know it was a miss/hit?
+    #*A: for miss we will create if else statements, create a second range
+    #*block 1 will equal range(0, 4096, 16)
+    #*block 2 will equal range(0, 4096, 32)
+    #*check where the offset falls for the range
+    #*if offset < block1 and offset > 2 then this falls into block 1
+    #*if offset > block1 and offset < 2 then this falls into block 2
+    #*this is probably wrong
+    #*also check if range value with another for loop to see if the values
+    #*are zero...if they are zero, then this is a miss.
+    
 def file_to_array(file):
     return_array = []
     #read in each line into array elements and ignore newlines
@@ -299,10 +320,10 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_a.txt")
+sim("sample_a.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_d.txt")
+#sim("sample_d.txt")
