@@ -1,0 +1,72 @@
+# This is a mini program with random values in memory
+# Once I get this mini program to output hit/miss correctly
+# I will then implement this to our main program
+import math   
+
+memREE = [0]*64             #16 memory slots
+
+memREE[0] = 10               #block 1
+memREE[4] = 20               #block 1
+memREE[8] = 30               #block 1
+memREE[12] = 44              #block 1
+memREE[16] = 55                #block 2
+memREE[20] = 66                #block 2
+memREE[24] = 77                #block 2
+memREE[28] = 88                #block 2
+memREE[32] = 120            #block 1
+memREE[36] = 234            #block 1
+memREE[40] = 534            #block 1
+memREE[44] = 672            #block 1
+memREE[48] = 13               #block 2
+memREE[52] = 14               #block 2
+memREE[56] = 15               #block 2
+memREE[60] = 16               #block 2
+
+#---------------------------------------------------------------------
+# Below is code that organizes the data above
+# It organizes it as the following . . .
+# Each 'MemoryBlock' will hold 4 memory address
+# MemBlock[0] = memory address 0, 4, 8, 12
+# MemBlock[1] = memory address 16, 20, 24, 26   etc.
+# Finally, each MemBlock will hold the value of Block
+# which can be block 1 or block 2
+# Now all memory is organized
+
+a =[]                       #array that holds memREE values
+b =[]
+c =[]
+d =[]
+memblock = [a, b ,c ,d]     #array that holds arrays of memREE values
+
+for i in range(0, 4, 1):    
+    j = 16*i
+    if (i ==0 or i%2 ==0):
+        v =1                #makes memBlock point at block 1      
+    else:
+        v =2                #makes memBlock point at block 2
+    memblock[i] = [memREE[j], memREE[j+4], memREE[j+8], memREE[j+12], v]
+    
+#---------------------------------------------------------------------
+
+    
+def findBlockNum(n):        #finds the block# if given memory address
+    
+    for i in range(0 ,4, 1):
+        j = 16*i + 12
+        if n <= j:
+            temp_arr = memblock[i]
+            print("Mem[", n, "] is in block: ", temp_arr[4])
+            break
+
+
+
+
+findBlockNum(36)            # TEST value             
+print("\nLast digit in array below corresponds to Block #")
+print("MemoryBlock 0: ", memblock[0])          #M[0]
+print("MemoryBlock 1: ", memblock[1])          #M[4]
+print("MemoryBlock 2: ", memblock[2])          #M[8]
+print("MemoryBlock 3: ", memblock[3])          #M[12]
+
+
+
