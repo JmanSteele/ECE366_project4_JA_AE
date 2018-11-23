@@ -6,8 +6,8 @@ print("ECE 366 Project 4 MIPS simulator")
 #outputs: filing
 
 import math
-#cache functions go here---------------------------------------
-#def cacheMeOusside(Addr)#pop culture reference
+#this is where the cache function will be performed
+def cacheMeOusside(Addr, cache, tagsa):#pop culture reference
     #part 3 a
     #initialize blocks to be 4 words by somehow going through array for every
     #16 memory location since 16/4 will be 4 words...range(0, 4096, 16)??
@@ -31,6 +31,31 @@ import math
     #block index log(2) = 1 bit
     #16 - 1 - 4 = 11
     #11 bit tag field...****tell me if I'm off Alberto*****
+    #Addr=bin(Addr)      #convert int of the lw offset back to binary
+    print("Offset for CACHE: ", Addr, tagsa)
+    taga=int(Addr[0:11], 2)     #these values are for part a
+    print("TAG :", taga)
+    blocka=int(Addr[11:12], 2)
+    print("Block: ", blocka)
+    OFFSETa=int(Addr[12:16], 2)
+    print("4 bit offset: ", OFFSETa)
+    if blocka == 0:    #untested from this point on in the cache function
+        if taga != tagsa[0]:
+            cache[0]+=1   #increasing miss counter when the tags don't match from
+            print("MISS! Replacing cache...")
+            tagsa[0] = taga  #replacing the tag for future reference
+        elif taga == tagsa[0]:
+            cache[1]+=1
+            print ("HIT! Loaded from cache..")
+    elif blocka == 1:   #this will check in second block (block 1)
+        if taga != tagsa[1]:
+            cache[0]+=1
+            print("MISS! Replacing cache...")
+            tagsa[1] = taga
+        elif taga == tagsa[1]:
+            cache[1]+=1
+            print("HIT! Loaded from cache...")
+    return [Addr, cache, tagsa]
     
 def file_to_array(file):
     return_array = []
@@ -45,7 +70,7 @@ def file_to_array(file):
         return_array.append(line)
 
     return return_array
-def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
+def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tagsa):
     if op[0:6]=="000000" and op[26:32]=="100000":
         print("ADD")
         rs=int(op[6:11], 2)
@@ -229,10 +254,11 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         print("LW")
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
+        offsetforcache=op[16:32]
         offset=int(op[16:32], 2)
         kk=reg_arr[rs]+offset-8192 #you put -8912, but should be -8192 lol
         print("Offset: ", kk)
-        #cacheMeOusside(kk) #jump to function that performs the cache assignments (part 3)
+        cacheMeOusside(offsetforcache, cache, tagsa) #jump to function that performs the cache assignments (part 3)
         print("memory: ", memREE[kk])
         print("Register and its value: register", rs, reg_arr[rs]) #A.E instead of rt, should be rs
         reg_arr[rt]=memREE[kk]    
@@ -261,11 +287,13 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         cycle[4]+=1
         percentage[2]+=1     #Memory based instruction
         x+=1
-    return [op, reg_arr, pc, cycle, x]
+    return [op, reg_arr, pc, cycle, x, cache, tagsa]
 #sim: simulates the MIPS hex code
 #inputs: file name of txt that carries the instructions
 def sim(MIPS_HEX):
+    tagsa=["", ""]
     #initialize pc and register array
+    cache=[0, 0, 0, 0, 0, 0]  #[part a miss, part a hit, part b miss...part c hit]
     x=0   #this is to configure pc back to 1 increments instead of 4 so I can make it easier to read my input files
     pc = 0
     reg_arr = [0, 0, 0, 0, 0, 0, 0, 0] #registers [$0, $1, $2, $3, $4, $5, $6, $7]
@@ -282,7 +310,7 @@ def sim(MIPS_HEX):
     while x < len(instr_mem):
         op = instr_mem[x]
         print("PC: ", pc, hex(pc))
-        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic)
+        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tagsa)
         reg_arr = data_set[1]
         pc=data_set[2]
         cycle=data_set[3]
@@ -314,6 +342,13 @@ def sim(MIPS_HEX):
     print("$4 = ", reg_arr[4], "\n$5 = ", reg_arr[5], "\n$6 = ", reg_arr[6])
     print("$7 = ", reg_arr[7])
     print("Memory display: ...")
+    cashmoney = cache[0] + cache[1]    #totaling the hit/miss from part a
+    cache[0]  #for some reason it's always off by 1 so I just
+                 #computed this for a proper result
+    cache[1]
+    print("Total times accessed cache DM 4 words, 2 blocks: ", cashmoney)
+    print("Total hits: ", cache[1])
+    print("Total misses: ", cache[0])
     i=0
     for i in range(0, 4096, 4):
         if int(memREE[i]) != 0:
@@ -329,9 +364,9 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_a.txt")
+#sim("sample_a.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_b.txt")
+sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
