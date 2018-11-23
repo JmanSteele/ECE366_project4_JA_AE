@@ -35,7 +35,7 @@ def cacheMeOusside(Addr, cache, tagsa):#pop culture reference
     print("Offset for CACHE: ", Addr, tagsa)
     taga=int(Addr[0:11], 2)     #these values are for part a
     print("TAG :", taga)
-    blocka=int(Addr[11:12], 2)
+    blocka=int(Addr[11], 2)
     print("Block: ", blocka)
     OFFSETa=int(Addr[12:16], 2)
     print("4 bit offset: ", OFFSETa)
@@ -55,7 +55,7 @@ def cacheMeOusside(Addr, cache, tagsa):#pop culture reference
         elif taga == tagsa[1]:
             cache[1]+=1
             print("HIT! Loaded from cache...")
-    return [Addr, cache, tagsa]
+    return [cache, tagsa]
     
 def file_to_array(file):
     return_array = []
@@ -291,7 +291,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
 #sim: simulates the MIPS hex code
 #inputs: file name of txt that carries the instructions
 def sim(MIPS_HEX):
-    tagsa=["", ""]
+    tagsa=['','']
     #initialize pc and register array
     cache=[0, 0, 0, 0, 0, 0]  #[part a miss, part a hit, part b miss...part c hit]
     x=0   #this is to configure pc back to 1 increments instead of 4 so I can make it easier to read my input files
@@ -343,9 +343,6 @@ def sim(MIPS_HEX):
     print("$7 = ", reg_arr[7])
     print("Memory display: ...")
     cashmoney = cache[0] + cache[1]    #totaling the hit/miss from part a
-    cache[0]  #for some reason it's always off by 1 so I just
-                 #computed this for a proper result
-    cache[1]
     print("Total times accessed cache DM 4 words, 2 blocks: ", cashmoney)
     print("Total hits: ", cache[1])
     print("Total misses: ", cache[0])
@@ -364,9 +361,9 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_a.txt")
+sim("sample_a.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_b.txt")
+#sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
