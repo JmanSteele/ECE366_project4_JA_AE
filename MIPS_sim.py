@@ -6,9 +6,8 @@ print("ECE 366 Project 4 MIPS simulator")
 #outputs: filing
 
 import math
-
 #cache functions go here---------------------------------------
-#def cache_me000ousside(
+#def cacheMeOusside(Addr)#pop culture reference
     #part 3 a
     #initialize blocks to be 4 words by somehow going through array for every
     #16 memory location since 16/4 will be 4 words...range(0, 4096, 16)??
@@ -26,6 +25,12 @@ import math
     #*this is probably wrong
     #*also check if range value with another for loop to see if the values
     #*are zero...if they are zero, then this is a miss.
+    #4 words * 4 bytes/word = 16 bytes
+    #log(16) = 4 bits   <---I'm going by the example Rao gave us in class for DM
+    #[b3 b2 b1 b0]  in word offset
+    #block index log(2) = 1 bit
+    #16 - 1 - 4 = 11
+    #11 bit tag field...****tell me if I'm off Alberto*****
     
 def file_to_array(file):
     return_array = []
@@ -161,6 +166,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
             cycle[2]+=2   #stall for branch so pipeline increases by 2
             x+=1
             x+=int(offset)
+            print("Branch Complete..Stalling..")
         else:
             pc+=4
             cycle[2]+=1
@@ -191,10 +197,12 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
             pc=pc+(int(offset)*4)
             cycle[2]+=2
             x=x+1+offset
+            print("Branching..Stalling..")
         else:
             pc+=4
             cycle[2]+=1
             x+=1
+            print("No Branch Necessary.")
     elif op[0:6]=="000000" and op[26:32]=="101010":
         print("SLT")
         rs=int(op[6:11], 2)
@@ -222,8 +230,9 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic):
         rs=int(op[6:11], 2)
         rt=int(op[11:16], 2)
         offset=int(op[16:32], 2)
-        print("offset", offset)
         kk=reg_arr[rs]+offset-8192 #you put -8912, but should be -8192 lol
+        print("Offset: ", kk)
+        #cacheMeOusside(kk) #jump to function that performs the cache assignments (part 3)
         print("memory: ", memREE[kk])
         print("Register and its value: register", rs, reg_arr[rs]) #A.E instead of rt, should be rs
         reg_arr[rt]=memREE[kk]    
