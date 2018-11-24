@@ -9,23 +9,6 @@ import math
 #this is where the cache function will be performed
 def cacheMeOusside(Addr, cache, tagsa):#pop culture reference
     #part 3 a
-    #initialize blocks to be 4 words by somehow going through array for every
-    #16 memory location since 16/4 will be 4 words...range(0, 4096, 16)??
-    #output the block name (1 or 2)
-    #output the tag
-    #if block gets overwritten it will be miss so we probably need a flag
-    #that is a global variable
-    #Q: how do we know it was a miss/hit?
-    #*A: for miss we will create if else statements, create a second range
-    #*block 1 will equal range(0, 4096, 16)
-    #*block 2 will equal range(0, 4096, 32)
-    #*check where the offset falls for the range
-    #*if offset < block1 and offset > 2 then this falls into block 1
-    #*if offset > block1 and offset < 2 then this falls into block 2
-    #*this is probably wrong
-    #*also check if range value with another for loop to see if the values
-    #*are zero...if they are zero, then this is a miss.
-    #4 words * 4 bytes/word = 16 bytes
     #log(16) = 4 bits   <---I'm going by the example Rao gave us in class for DM
     #[b3 b2 b1 b0]  in word offset
     #block index log(2) = 1 bit
@@ -45,17 +28,19 @@ def cacheMeOusside(Addr, cache, tagsa):#pop culture reference
             print("MISS! Replacing cache...")
             tagsa[0] = taga  #replacing the tag for future reference
         elif taga == tagsa[0]:
-            cache[1]+=1
+            cache[1]+=1     #increase hit counter
+            tagsa[0]=taga
             print ("HIT! Loaded from cache..")
     elif blocka == 1:   #this will check in second block (block 1)
-        if taga != tagsa[1]:
-            cache[0]+=1
+        if taga != tagsa[1]:   #tags are not equal to eachother
+            cache[0]+=1    #increase miss counter
             print("MISS! Replacing cache...")
-            tagsa[1] = taga
-        elif taga == tagsa[1]:
-            cache[1]+=1
+            tagsa[1] = taga      #replace tag for block 1
+        elif taga == tagsa[1]:   #part a has a hit for block 1
+            cache[1]+=1          #hit counter increase
             print("HIT! Loaded from cache...")
-    return [cache, tagsa]
+            tagsa[1]=taga
+    return [cache, tagsa]        #return cache and tag values
     
 def file_to_array(file):
     return_array = []
@@ -68,8 +53,8 @@ def file_to_array(file):
         line=line.replace('0x', '')
         line=format(int(line,16),"032b")
         return_array.append(line)
-
     return return_array
+
 def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tagsa):
     if op[0:6]=="000000" and op[26:32]=="100000":
         print("ADD")
@@ -258,7 +243,6 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         offset=int(op[16:32], 2)
         kk=reg_arr[rs]+offset-8192 #you put -8912, but should be -8192 lol
         print("Offset: ", kk)
-        cacheMeOusside(offsetforcache, cache, tagsa) #jump to function that performs the cache assignments (part 3)
         print("memory: ", memREE[kk])
         print("Register and its value: register", rs, reg_arr[rs]) #A.E instead of rt, should be rs
         reg_arr[rt]=memREE[kk]    
@@ -269,6 +253,13 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         percentage[2]+=1     #Memory based instruction 
         x+=1
         pc+=4
+        kk=reg_arr[rs]+offset  #These lines down I troubleshot for hours until some
+        kk=bin(kk)             #thing worked
+        kk=kk.zfill(16)        #this was a sanity check
+        print("KK:", kk)       #I print this in case i need to debug
+                               # "kk" is just a value i stored the offset+register in
+                               #plus i didn't know what to call this value
+        cacheMeOusside(kk, cache, tagsa) #jump to function that performs the cache assignments (part 3)
     elif op[0:6]=="101011":
         print("SW")
         rs=int(op[6:11], 2)
@@ -291,7 +282,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
 #sim: simulates the MIPS hex code
 #inputs: file name of txt that carries the instructions
 def sim(MIPS_HEX):
-    tagsa=['','']
+    tagsa=[0, 0]  #these are the tags for part 3 a
     #initialize pc and register array
     cache=[0, 0, 0, 0, 0, 0]  #[part a miss, part a hit, part b miss...part c hit]
     x=0   #this is to configure pc back to 1 increments instead of 4 so I can make it easier to read my input files
@@ -361,10 +352,10 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_a.txt")
+#sim("sample_a.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_d.txt")
+sim("sample_d.txt")
