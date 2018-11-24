@@ -7,7 +7,7 @@ print("ECE 366 Project 4 MIPS simulator")
 
 import math
 #this is where the cache function will be performed
-def cacheMeOusside(Addr, cache, tagsa):#pop culture reference
+def cacheMeOusside(Addr, cache, tags):#pop culture reference
     #part 3 a
     #log(16) = 4 bits   <---I'm going by the example Rao gave us in class for DM
     #[b3 b2 b1 b0]  in word offset
@@ -15,7 +15,8 @@ def cacheMeOusside(Addr, cache, tagsa):#pop culture reference
     #16 - 1 - 4 = 11
     #11 bit tag field...****tell me if I'm off Alberto*****
     #Addr=bin(Addr)      #convert int of the lw offset back to binary
-    print("Offset for CACHE: ", Addr, tagsa)
+    print("Running DM cache of 2 blocks, 4 words")
+    print("Offset for CACHE: ", Addr, tags)
     taga=int(Addr[0:11], 2)     #these values are for part a
     print("TAG :", taga)
     blocka=int(Addr[11], 2)
@@ -23,24 +24,75 @@ def cacheMeOusside(Addr, cache, tagsa):#pop culture reference
     OFFSETa=int(Addr[12:16], 2)
     print("4 bit offset: ", OFFSETa)
     if blocka == 0:    #untested from this point on in the cache function
-        if taga != tagsa[0]:
+        if taga != tags[0]:
             cache[0]+=1   #increasing miss counter when the tags don't match from
             print("MISS! Replacing cache...")
-            tagsa[0] = taga  #replacing the tag for future reference
-        elif taga == tagsa[0]:
+            tags[0] = taga  #replacing the tag for future reference
+        elif taga == tags[0]:
             cache[1]+=1     #increase hit counter
-            tagsa[0]=taga
+            tags[0]=taga
             print ("HIT! Loaded from cache..")
     elif blocka == 1:   #this will check in second block (block 1)
-        if taga != tagsa[1]:   #tags are not equal to eachother
+        if taga != tags[1]:   #tags are not equal to eachother
             cache[0]+=1    #increase miss counter
             print("MISS! Replacing cache...")
-            tagsa[1] = taga      #replace tag for block 1
-        elif taga == tagsa[1]:   #part a has a hit for block 1
+            tags[1] = taga      #replace tag for block 1
+        elif taga == tags[1]:   #part a has a hit for block 1
             cache[1]+=1          #hit counter increase
             print("HIT! Loaded from cache...")
-            tagsa[1]=taga
-    return [cache, tagsa]        #return cache and tag values
+            tags[1]=taga         #In the time spent debugging, I thought
+                                 #"What if I replace tag again anyway? That might work"
+                                 #Surprisingly it did work, and I don't want to find
+                                 #out why.
+    #part 3 b
+    #log(8) = 3
+    #[b2 b1 b0] in word offset
+    #block index log(4)=2
+    #16-3-2=11
+    #11 bit tag field same as part a \...(0.o)..../
+    print("Running DM cache of 4 blocks, 2 words")
+    blockb=int(Addr[11:13], 2)   #should read 4 block range
+    print("Block: ", blockb)
+    OFFSETb=int(Addr[13:16], 2)  #I don't think the offset is important for this
+    print("3 bit offset: ", OFFSETb) #but just for completion i'll do it anyway
+    
+    if blockb==0:
+        if taga != tags[2]: #I'm going to reuse variable 'taga' since the tag field
+            cache[2]+=1     # is also 11 bit, the same as part a
+            print("MISS! Replacing cache..")
+            tags[2]=taga
+        elif taga==tags[2]:
+            cache[3]+=1
+            print("Hit! Loaded from cache..")
+            tags[2]=taga
+    elif blockb==1:
+        if taga !=tags[3]:
+            cache[2]+=1
+            print("MISS! Replacing cache..")
+            tags[3]=taga
+        elif taga==tags[3]:
+            cache[3]+=1
+            print("Hit! Loaded from cache..")
+            tags[3]=taga
+    elif blockb==2:
+        if taga !=tags[4]:
+            cache[2]+=1
+            print("MISS! Replacing cache..")
+            tags[4]=taga
+        elif taga==tags[4]:
+            cache[3]+=1
+            print("Hit! Loaded from cache..")
+            tags[4]=taga
+    elif blockb==3:
+        if taga !=tags[5]:
+            cache[2]+=1
+            print("MISS! Replacing cache..")
+            tags[5]=taga
+        elif taga==tags[5]:
+            cache[3]+=1
+            print("Hit! Loaded from cache..")
+            tags[5]=taga
+    return [cache, tags]        #return cache and tag values
     
 def file_to_array(file):
     return_array = []
@@ -55,7 +107,7 @@ def file_to_array(file):
         return_array.append(line)
     return return_array
 
-def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tagsa):
+def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tags):
     if op[0:6]=="000000" and op[26:32]=="100000":
         print("ADD")
         rs=int(op[6:11], 2)
@@ -198,14 +250,14 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
                 hazard[2]+=1
     
         if op[16]=="1":
-            offset = -(65535 -int(op[16:32],2)+1)
+            offset = -(65535 -int(op[16:32],2)+1)  #incase the offset is negative
             print("offset when MSB is 1: ", offset)
         else:
             offset=int(op[16:32], 2)
-        if reg_arr[rs]!=reg_arr[rt]:
+        if reg_arr[rs]!=reg_arr[rt]: #if register values are not equal we will branch
             pc+=4
-            pc=pc+(int(offset)*4)
-            cycle[2]+=2
+            pc=pc+(int(offset)*4)    #altering pc based on what i found on the internet
+            cycle[2]+=2              #increasing pipeline count
             x=x+1+offset
             print("Branching..Stalling..")
         else:
@@ -259,7 +311,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         print("KK:", kk)       #I print this in case i need to debug
                                # "kk" is just a value i stored the offset+register in
                                #plus i didn't know what to call this value
-        cacheMeOusside(kk, cache, tagsa) #jump to function that performs the cache assignments (part 3)
+        cacheMeOusside(kk, cache, tags) #jump to function that performs the cache assignments (part 3)
     elif op[0:6]=="101011":
         print("SW")
         rs=int(op[6:11], 2)
@@ -278,11 +330,11 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         cycle[4]+=1
         percentage[2]+=1     #Memory based instruction
         x+=1
-    return [op, reg_arr, pc, cycle, x, cache, tagsa]
+    return [op, reg_arr, pc, cycle, x, cache, tags]
 #sim: simulates the MIPS hex code
 #inputs: file name of txt that carries the instructions
 def sim(MIPS_HEX):
-    tagsa=[0, 0]  #these are the tags for part 3 a
+    tags=[0, 0, 0, 0, 0, 0]  #these tags are [a0, a1, b0, b1, b2, b3]
     #initialize pc and register array
     cache=[0, 0, 0, 0, 0, 0]  #[part a miss, part a hit, part b miss...part c hit]
     x=0   #this is to configure pc back to 1 increments instead of 4 so I can make it easier to read my input files
@@ -301,7 +353,7 @@ def sim(MIPS_HEX):
     while x < len(instr_mem):
         op = instr_mem[x]
         print("PC: ", pc, hex(pc))
-        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tagsa)
+        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tags)
         reg_arr = data_set[1]
         pc=data_set[2]
         cycle=data_set[3]
@@ -337,6 +389,13 @@ def sim(MIPS_HEX):
     print("Total times accessed cache DM 4 words, 2 blocks: ", cashmoney)
     print("Total hits: ", cache[1])
     print("Total misses: ", cache[0])
+    biggiesmalls = 100*(cache[1]/(cache[0]+cache[1]))
+    print("Cache Hit Ratio: ", biggiesmalls, "%")
+    print("Total times accessed cache DM 2 words, 4 blocks: ", cashmoney)
+    print("Total hits: ", cache[3])
+    print("Total misses: ", cache[2])
+    biggiesmalls =100*(cache[3]/(cache[2]+cache[3]))
+    print("Cache Hit Ratio: ", biggiesmalls, "%")
     i=0
     for i in range(0, 4096, 4):
         if int(memREE[i]) != 0:
@@ -352,10 +411,10 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_a.txt")
+sim("sample_a.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_d.txt")
+#sim("sample_d.txt")
