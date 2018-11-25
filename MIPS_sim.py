@@ -4,10 +4,20 @@ print("ECE 366 Project 4 MIPS simulator")
 #file_reader reads each line of a file in an array as elements
 #input: file -- read MIPS instruction
 #outputs: filing
-
+import numpy #in case this line becomes an issue for when you test it on Thursday
+             #you need install numpy by opening your cmd prompt and typing in:
+             #python -m pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose
+             #that's what I did to make this work.
+             #I'm very sorry for the inconvenience
 import math
+def miss():
+    print("MISS! Replacing cache...")
+    return
+def hit():
+    print("HIT! Loaded from cache...")
+    return
 #this is where the cache function will be performed
-def cacheMeOusside(Addr, cache, tags):#pop culture reference
+def cacheMeOusside(Addr, cache, tags, tagsd):#pop culture reference
     #part 3 a
     #log(16) = 4 bits   <---I'm going by the example Rao gave us in class for DM
     #[b3 b2 b1 b0]  in word offset
@@ -55,7 +65,6 @@ def cacheMeOusside(Addr, cache, tags):#pop culture reference
     print("Block: ", blockb)
     OFFSETb=int(Addr[13:16], 2)  #I don't think the offset is important for this
     print("3 bit offset: ", OFFSETb) #but just for completion i'll do it anyway
-    
     if blockb==0:
         if taga != tags[2]: #I'm going to reuse variable 'taga' since the tag field
             cache[2]+=1     # is also 11 bit, the same as part a
@@ -92,7 +101,81 @@ def cacheMeOusside(Addr, cache, tags):#pop culture reference
             cache[3]+=1
             print("Hit! Loaded from cache..")
             tags[5]=taga
-    return [cache, tags]        #return cache and tag values
+    #part 3 d
+    #block = 1 bit
+    #set index = log(4) = 2 bit
+    #tag index = 16 - 2 - 1 = 13
+    print("Running 2-way set associative cache")
+    tagd = int(Addr[0:13], 2)    #aquiring tag
+    print("Tag: ", tagd)
+    si=int(Addr[13:15], 2)       #aquiring set index
+    print("Set Index: ", si)
+    bo=int(Addr[15:16], 2)          #aquiring offset in block
+    print("Offset in Block: ", bo)
+    print("Tag in cache being accessed: ", tagsd[si][bo])
+    old=cache[6]
+    old1=cache[7]
+    if bo == 0 and si ==0:
+        if tagd != tagsd[si][bo]:
+            cache[6]+=1
+            tagsd[si][bo]=tagd
+        elif tagd == tagsd[si][bo]:
+            cache[7]+=1
+            tagsd[si][bo]=tagd
+    elif bo == 1 and si ==0:
+        if tagd != tagsd[si][bo]:
+            cache[6]+=1
+            tagsd[si][bo]=tagd
+        elif tagd == tagsd[si][bo]:
+            cache[7]+=1
+            tagsd[si][bo]=tagd
+    elif bo == 0 and si ==1:
+        if tagd != tagsd[si][bo]:
+            cache[6]+=1
+            tagsd[si][bo]=tagd
+        elif tagd == tagsd[si][bo]:
+            cache[7]+=1
+            tagsd[si][bo]=tagd
+    elif bo == 1 and si ==1:
+        if tagd != tagsd[si][bo]:
+            cache[6]+=1
+            tagsd[si][bo]=tagd
+        elif tagd == tagsd[si][bo]:
+            cache[7]+=1
+            tagsd[si][bo]=tagd
+    elif bo == 0 and si ==2:
+        if tagd != tagsd[si][bo]:
+            cache[6]+=1
+            tagsd[si][bo]=tagd
+        elif tagd == tagsd[si][bo]:
+            cache[7]+=1
+            tagsd[si][bo]=tagd
+    elif bo == 1 and si ==2:
+        if tagd != tagsd[si][bo]:
+            cache[6]+=1
+            tagsd[si][bo]=tagd
+        elif tagd == tagsd[si][bo]:
+            cache[7]+=1
+            tagsd[si][bo]=tagd
+    elif bo == 0 and si ==3:
+        if tagd != tagsd[si][bo]:
+            cache[6]+=1
+            tagsd[si][bo]=tagd
+        elif tagd == tagsd[si][bo]:
+            cache[7]+=1
+            tagsd[si][bo]=tagd
+    elif bo == 1 and si ==3:
+        if tagd != tagsd[si][bo]:
+            cache[6]+=1
+            tagsd[si][bo]=tagd
+        elif tagd == tagsd[si][bo]:
+            cache[7]+=1
+            tagsd[si][bo]=tagd
+    if old != cache[6]:
+        miss()
+    elif old1 !=cache[7]:
+        hit()     
+    return [cache, tags, tagsd]        #return cache and tag values
     
 def file_to_array(file):
     return_array = []
@@ -107,7 +190,7 @@ def file_to_array(file):
         return_array.append(line)
     return return_array
 
-def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tags):
+def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tags, tagsd):
     if op[0:6]=="000000" and op[26:32]=="100000":
         print("ADD")
         rs=int(op[6:11], 2)
@@ -311,7 +394,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         print("KK:", kk)       #I print this in case i need to debug
                                # "kk" is just a value i stored the offset+register in
                                #plus i didn't know what to call this value
-        cacheMeOusside(kk, cache, tags) #jump to function that performs the cache assignments (part 3)
+        cacheMeOusside(kk, cache, tags, tagsd) #jump to function that performs the cache assignments (part 3)
     elif op[0:6]=="101011":
         print("SW")
         rs=int(op[6:11], 2)
@@ -330,15 +413,17 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         cycle[4]+=1
         percentage[2]+=1     #Memory based instruction
         x+=1
-    return [op, reg_arr, pc, cycle, x, cache, tags]
+    return [op, reg_arr, pc, cycle, x, cache, tags, tagsd]
 #sim: simulates the MIPS hex code
 #inputs: file name of txt that carries the instructions
 def sim(MIPS_HEX):
     tags=[0, 0, 0, 0, 0, 0]  #these tags are [a0, a1, b0, b1, b2, b3]
-    #initialize pc and register array
-    cache=[0, 0, 0, 0, 0, 0]  #[part a miss, part a hit, part b miss...part c hit]
+    tagsd=numpy.zeros((4, 2))  #I was thinking this code looked boring so I added a 2d array
+                                #to make things more interesting for part 3 d
+                                #its 4 rows, 2 columns, i believe it's all initialized to zeores.
+    cache=[0, 0, 0, 0, 0, 0, 0, 0]  #[part a miss, part a hit, part b miss...part c hit]
     x=0   #this is to configure pc back to 1 increments instead of 4 so I can make it easier to read my input files
-    pc = 0
+    pc = 0 #initialize pc and register array
     reg_arr = [0, 0, 0, 0, 0, 0, 0, 0] #registers [$0, $1, $2, $3, $4, $5, $6, $7]
     cycle=[0, 0, 0, 0, 0, 0] #this array will work like so [single cycle, multi cycle, pipeline, 3cycle, 4cycle, 5cycle]
     #create file variables from file name strings
@@ -353,7 +438,7 @@ def sim(MIPS_HEX):
     while x < len(instr_mem):
         op = instr_mem[x]
         print("PC: ", pc, hex(pc))
-        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tags)
+        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tags, tagsd)
         reg_arr = data_set[1]
         pc=data_set[2]
         cycle=data_set[3]
@@ -396,6 +481,12 @@ def sim(MIPS_HEX):
     print("Total misses: ", cache[2])
     biggiesmalls =100*(cache[3]/(cache[2]+cache[3]))
     print("Cache Hit Ratio: ", biggiesmalls, "%")
+    cashmoney= cache[6] + cache[7]
+    print("Total times accessed cache from set associative 2-way: ", cashmoney)
+    print("Total hits: ", cache[7])
+    print("Total misses: ", cache[6])
+    biggiesmalls = 100*(cache[7]/(cache[6]+cache[7]))
+    print("Cache Hit Ratio: ", biggiesmalls)
     i=0
     for i in range(0, 4096, 4):
         if int(memREE[i]) != 0:
