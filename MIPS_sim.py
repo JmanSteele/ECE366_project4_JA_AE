@@ -4,11 +4,10 @@ print("ECE 366 Project 4 MIPS simulator")
 #file_reader reads each line of a file in an array as elements
 #input: file -- read MIPS instruction
 #outputs: filing
-import numpy #in case this line becomes an issue for when you test it on Thursday
-             #you need install numpy by opening your cmd prompt and typing in:
-             #python -m pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose
-             #that's what I did to make this work.
-             #I'm very sorry for the inconvenience
+import numpy #originally I included numpy because I wanted to do 2d matrixes
+             #for part d instead of using an array of 8 values
+             #It didn't go as planned after debugging, but I kept numpy anyway to
+             # so it would create 8 bit arrays for me
 import math
 def miss():
     print("MISS! Replacing cache...")
@@ -23,7 +22,7 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU):#pop culture reference
     #[b3 b2 b1 b0]  in word offset
     #block index log(2) = 1 bit
     #16 - 1 - 4 = 11
-    #11 bit tag field...****tell me if I'm off Alberto*****
+    #11 bit tag field...
     #Addr=bin(Addr)      #convert int of the lw offset back to binary
     print("Running DM cache of 2 blocks, 4 words")
     print("Offset for CACHE: ", Addr, tags)
@@ -108,45 +107,106 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU):#pop culture reference
     print("Running 2-way set associative cache")
     tagd = int(Addr[0:13], 2)    #aquiring tag
     print("Tag: ", tagd)
-    si=int(Addr[13:15], 2)       #aquiring set index
+    si=int(Addr[13:16], 2)       #aquiring set index
     print("Set Index: ", si)
     bo=int(Addr[15], 2)          #aquiring offset in block
     print("Offset in Block: ", bo)
-    print("Tag in cache being accessed: ", tagsd[si][bo])
     old=cache[6]
     old1=cache[7]
-    if si ==0:
-        if tagd != tagsd[si][0] and tagd != tagsd[si][1]:
-            cache[6]+=1
-            tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][0] or tagd == tagsd[si][1]:
-            cache[7]+=1
-            tagsd[si][bo]=tagd
-    elif si ==1:
-        if tagd != tagsd[si][0] and tagd != tagsd[si][1]:
-            cache[6]+=1
-            tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][0] or tagd == tagsd[si][1]:
-            cache[7]+=1
-            tagsd[si][bo]=tagd
-    elif si ==2:
-        if tagd != tagsd[si][0] and  tagd != tagsd[si][1]:
-            cache[6]+=1
-            tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][0] or tagd == tagsd[si][1]:
-            cache[7]+=1
-            tagsd[si][bo]=tagd
-    elif si ==3:
-        if tagd != tagsd[si][0] and tagsd[si][1]:
-            cache[6]+=1
-            tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][bo] or tagsd[si][1]:
-            cache[7]+=1
-            tagsd[si][bo]=tagd
+    if si ==0 or si ==4:
+        if tagd != tagsd[0] and tagd != tagsd[1]:
+            cache[6] += 1           #increasing miss counter
+            if LRU[0] < LRU[1]: #we're checking now which block was least used
+                tagsd[0] = tagd      #store the tag in cache if this was block was least used
+                LRU[0] += 1          #incremement this block so we know it is used once more
+            elif LRU[0] > LRU[1]:  #the same thing happens here except under opposite conditions
+                tagsd[1] = tagd
+                LRU[1] += 1
+            else:
+                tagsd[0] = tagd
+                LRU[0] += 1      #this should be activated for the initial
+                                  #cache access of this block
+                                  #or for when both blocks are being used the same amount
+        elif tagd == tagsd[0]:
+            cache[7] += 1
+            tagsd[0] = tagd
+            LRU[0] += 1
+        elif tagd == tagsd[1]:
+            cache[7] += 1
+            tagsd[1] = tagd
+            LRU[1] += 1
+    elif si == 1 or si == 5:
+        if tagd != tagsd[2] and tagd != tagsd[3]:
+            cache[6] += 1           #increasing miss counter
+            if LRU[2] < LRU[3]: #we're checking now which block was least used
+                tagsd[2] = tagd      #store the tag in cache if this was block was least used
+                LRU[2] += 1          #incremement this block so we know it is used once more
+            elif LRU[2] > LRU[3]:  #the same thing happens here except under opposite conditions
+                tagsd[3] = tagd
+                LRU[3] += 1
+            else:
+                tagsd[2] = tagd
+                LRU[2] += 1      #this should be activated for the initial
+                                  #cache access of this block
+                                  #or for when both blocks are being used the same amount
+        elif tagd == tagsd[2]:
+            cache[7] += 1
+            tagsd[2] = tagd
+            LRU[2] += 1
+        elif tagd == tagsd[3]:
+            cache[7] += 1
+            tagsd[3] = tagd
+            LRU[3] += 1
+    elif si == 2 or si == 6:
+        if tagd != tagsd[4] and tagd != tagsd[5]:
+            cache[6] += 1           #increasing miss counter
+            if LRU[4] < LRU[5]: #we're checking now which block was least used
+                tagsd[4] = tagd      #store the tag in cache if this was block was least used
+                LRU[4] += 1          #incremement this block so we know it is used once more
+            elif LRU[4] > LRU[5]:  #the same thing happens here except under opposite conditions
+                tagsd[5] = tagd
+                LRU[5] += 1
+            else:
+                tagsd[4] = tagd
+                LRU[4] += 1      #this should be activated for the initial
+                                  #cache access of this block
+                                  #or for when both blocks are being used the same amount
+        elif tagd == tagsd[4]:
+            cache[7] += 1
+            tagsd[4] = tagd
+            LRU[4] += 1
+        elif tagd == tagsd[5]:
+            cache[7] += 1
+            tagsd[5] = tagd
+            LRU[5] += 1
+    elif si == 3 or si ==7:
+        if tagd != tagsd[6] and tagd != tagsd[7]:
+            cache[6] += 1           #increasing miss counter
+            if LRU[6] < LRU[7]: #we're checking now which block was least used
+                tagsd[6] = tagd      #store the tag in cache if this was block was least used
+                LRU[6] += 1          #incremement this block so we know it is used once more
+            elif LRU[6] > LRU[7]:  #the same thing happens here except under opposite conditions
+                tagsd[7] = tagd
+                LRU[7] += 1
+            else:
+                tagsd[6] = tagd
+                LRU[6] += 1      #this should be activated for the initial
+                                  #cache access of this block
+                                  #or for when both blocks are being used the same amount
+        elif tagd == tagsd[6]:
+            cache[7] += 1
+            tagsd[6] = tagd
+            LRU[6] += 1
+        elif tagd == tagsd[7]:
+            cache[7] += 1
+            tagsd[7] = tagd
+            LRU[7] += 1
     if old != cache[6]:
         miss()
     elif old1 !=cache[7]:
-        hit()     
+        hit()
+    print("2 way set cache: \n", tagsd)
+    print("LRU: \n", LRU)
     return [cache, tags, tagsd, LRU]        #return cache and tag values
     
 def file_to_array(file):
@@ -389,11 +449,9 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
 #sim: simulates the MIPS hex code
 #inputs: file name of txt that carries the instructions
 def sim(MIPS_HEX):
-    LRU=numpy.zeros((4, 2))  #this will be used as lru counters
+    LRU=numpy.zeros((8))  #this will be matrix for LRU
     tags=[0, 0, 0, 0, 0, 0]  #these tags are [a0, a1, b0, b1, b2, b3]
-    tagsd=numpy.zeros((4, 2))  #I was thinking this code looked boring so I added a 2d array
-                                #to make things more interesting for part 3 d
-                                #its 4 rows, 2 columns, i believe it's all initialized to zeores.
+    tagsd=numpy.zeros((8))  #this will be a matrix or tags of part d
     cache=[0, 0, 0, 0, 0, 0, 0, 0]  #[part a miss, part a hit, part b miss...part c hit]
     x=0   #this is to configure pc back to 1 increments instead of 4 so I can make it easier to read my input files
     pc = 0 #initialize pc and register array
@@ -463,7 +521,7 @@ def sim(MIPS_HEX):
     i=0
     for i in range(0, 4096, 4):
         if int(memREE[i]) != 0:
-            print("Memory ",i,":" '%8s' % memREE[i],'%20s' % hex(abs(memREE[i])))
+            print("Memory ",i,":" '%8s' % memREE[i])
     print("--------------------------------")
     print("Instrution percentages")
     print("ALU:", '%10s' % round(100 *(percentage[0] / dic)), "%")
@@ -475,10 +533,10 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_a.txt")
+#sim("sample_a.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_d.txt")
+sim("sample_d.txt")
