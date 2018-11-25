@@ -17,7 +17,7 @@ def hit():
     print("HIT! Loaded from cache...")
     return
 #this is where the cache function will be performed
-def cacheMeOusside(Addr, cache, tags, tagsd):#pop culture reference
+def cacheMeOusside(Addr, cache, tags, tagsd, LRU):#pop culture reference
     #part 3 a
     #log(16) = 4 bits   <---I'm going by the example Rao gave us in class for DM
     #[b3 b2 b1 b0]  in word offset
@@ -33,27 +33,29 @@ def cacheMeOusside(Addr, cache, tags, tagsd):#pop culture reference
     print("Block: ", blocka)
     OFFSETa=int(Addr[12:16], 2)
     print("4 bit offset: ", OFFSETa)
+    olda=cache[0]
+    olda1=cache[1]
     if blocka == 0:    #untested from this point on in the cache function
         if taga != tags[0]:
             cache[0]+=1   #increasing miss counter when the tags don't match from
-            print("MISS! Replacing cache...")
             tags[0] = taga  #replacing the tag for future reference
         elif taga == tags[0]:
             cache[1]+=1     #increase hit counter
             tags[0]=taga
-            print ("HIT! Loaded from cache..")
     elif blocka == 1:   #this will check in second block (block 1)
         if taga != tags[1]:   #tags are not equal to eachother
             cache[0]+=1    #increase miss counter
-            print("MISS! Replacing cache...")
             tags[1] = taga      #replace tag for block 1
         elif taga == tags[1]:   #part a has a hit for block 1
             cache[1]+=1          #hit counter increase
-            print("HIT! Loaded from cache...")
             tags[1]=taga         #In the time spent debugging, I thought
                                  #"What if I replace tag again anyway? That might work"
                                  #Surprisingly it did work, and I don't want to find
                                  #out why.
+    if olda != cache[0]:
+        miss()
+    elif olda1 != cache[1]:
+        hit()
     #part 3 b
     #log(8) = 3
     #[b2 b1 b0] in word offset
@@ -65,42 +67,40 @@ def cacheMeOusside(Addr, cache, tags, tagsd):#pop culture reference
     print("Block: ", blockb)
     OFFSETb=int(Addr[13:16], 2)  #I don't think the offset is important for this
     print("3 bit offset: ", OFFSETb) #but just for completion i'll do it anyway
+    oldb=cache[2]
+    oldb1=cache[3]
     if blockb==0:
         if taga != tags[2]: #I'm going to reuse variable 'taga' since the tag field
             cache[2]+=1     # is also 11 bit, the same as part a
-            print("MISS! Replacing cache..")
             tags[2]=taga
         elif taga==tags[2]:
             cache[3]+=1
-            print("Hit! Loaded from cache..")
             tags[2]=taga
     elif blockb==1:
         if taga !=tags[3]:
             cache[2]+=1
-            print("MISS! Replacing cache..")
             tags[3]=taga
         elif taga==tags[3]:
             cache[3]+=1
-            print("Hit! Loaded from cache..")
             tags[3]=taga
     elif blockb==2:
         if taga !=tags[4]:
             cache[2]+=1
-            print("MISS! Replacing cache..")
             tags[4]=taga
         elif taga==tags[4]:
             cache[3]+=1
-            print("Hit! Loaded from cache..")
             tags[4]=taga
     elif blockb==3:
         if taga !=tags[5]:
             cache[2]+=1
-            print("MISS! Replacing cache..")
             tags[5]=taga
         elif taga==tags[5]:
             cache[3]+=1
-            print("Hit! Loaded from cache..")
             tags[5]=taga
+    if oldb != cache[2]:
+        miss()
+    elif oldb1 != cache[3]:
+        hit()
     #part 3 d
     #block = 1 bit
     #set index = log(4) = 2 bit
@@ -110,72 +110,44 @@ def cacheMeOusside(Addr, cache, tags, tagsd):#pop culture reference
     print("Tag: ", tagd)
     si=int(Addr[13:15], 2)       #aquiring set index
     print("Set Index: ", si)
-    bo=int(Addr[15:16], 2)          #aquiring offset in block
+    bo=int(Addr[15], 2)          #aquiring offset in block
     print("Offset in Block: ", bo)
     print("Tag in cache being accessed: ", tagsd[si][bo])
     old=cache[6]
     old1=cache[7]
-    if bo == 0 and si ==0:
-        if tagd != tagsd[si][bo]:
+    if si ==0:
+        if tagd != tagsd[si][0] and tagd != tagsd[si][1]:
             cache[6]+=1
             tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][bo]:
+        elif tagd == tagsd[si][0] or tagd == tagsd[si][1]:
             cache[7]+=1
             tagsd[si][bo]=tagd
-    elif bo == 1 and si ==0:
-        if tagd != tagsd[si][bo]:
+    elif si ==1:
+        if tagd != tagsd[si][0] and tagd != tagsd[si][1]:
             cache[6]+=1
             tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][bo]:
+        elif tagd == tagsd[si][0] or tagd == tagsd[si][1]:
             cache[7]+=1
             tagsd[si][bo]=tagd
-    elif bo == 0 and si ==1:
-        if tagd != tagsd[si][bo]:
+    elif si ==2:
+        if tagd != tagsd[si][0] and  tagd != tagsd[si][1]:
             cache[6]+=1
             tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][bo]:
+        elif tagd == tagsd[si][0] or tagd == tagsd[si][1]:
             cache[7]+=1
             tagsd[si][bo]=tagd
-    elif bo == 1 and si ==1:
-        if tagd != tagsd[si][bo]:
+    elif si ==3:
+        if tagd != tagsd[si][0] and tagsd[si][1]:
             cache[6]+=1
             tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][bo]:
-            cache[7]+=1
-            tagsd[si][bo]=tagd
-    elif bo == 0 and si ==2:
-        if tagd != tagsd[si][bo]:
-            cache[6]+=1
-            tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][bo]:
-            cache[7]+=1
-            tagsd[si][bo]=tagd
-    elif bo == 1 and si ==2:
-        if tagd != tagsd[si][bo]:
-            cache[6]+=1
-            tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][bo]:
-            cache[7]+=1
-            tagsd[si][bo]=tagd
-    elif bo == 0 and si ==3:
-        if tagd != tagsd[si][bo]:
-            cache[6]+=1
-            tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][bo]:
-            cache[7]+=1
-            tagsd[si][bo]=tagd
-    elif bo == 1 and si ==3:
-        if tagd != tagsd[si][bo]:
-            cache[6]+=1
-            tagsd[si][bo]=tagd
-        elif tagd == tagsd[si][bo]:
+        elif tagd == tagsd[si][bo] or tagsd[si][1]:
             cache[7]+=1
             tagsd[si][bo]=tagd
     if old != cache[6]:
         miss()
     elif old1 !=cache[7]:
         hit()     
-    return [cache, tags, tagsd]        #return cache and tag values
+    return [cache, tags, tagsd, LRU]        #return cache and tag values
     
 def file_to_array(file):
     return_array = []
@@ -190,7 +162,7 @@ def file_to_array(file):
         return_array.append(line)
     return return_array
 
-def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tags, tagsd):
+def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tags, tagsd, LRU):
     if op[0:6]=="000000" and op[26:32]=="100000":
         print("ADD")
         rs=int(op[6:11], 2)
@@ -394,7 +366,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         print("KK:", kk)       #I print this in case i need to debug
                                # "kk" is just a value i stored the offset+register in
                                #plus i didn't know what to call this value
-        cacheMeOusside(kk, cache, tags, tagsd) #jump to function that performs the cache assignments (part 3)
+        cacheMeOusside(kk, cache, tags, tagsd, LRU) #jump to function that performs the cache assignments (part 3)
     elif op[0:6]=="101011":
         print("SW")
         rs=int(op[6:11], 2)
@@ -413,10 +385,11 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         cycle[4]+=1
         percentage[2]+=1     #Memory based instruction
         x+=1
-    return [op, reg_arr, pc, cycle, x, cache, tags, tagsd]
+    return [op, reg_arr, pc, cycle, x, cache, tags, tagsd, LRU]
 #sim: simulates the MIPS hex code
 #inputs: file name of txt that carries the instructions
 def sim(MIPS_HEX):
+    LRU=numpy.zeros((4, 2))  #this will be used as lru counters
     tags=[0, 0, 0, 0, 0, 0]  #these tags are [a0, a1, b0, b1, b2, b3]
     tagsd=numpy.zeros((4, 2))  #I was thinking this code looked boring so I added a 2d array
                                 #to make things more interesting for part 3 d
@@ -438,7 +411,7 @@ def sim(MIPS_HEX):
     while x < len(instr_mem):
         op = instr_mem[x]
         print("PC: ", pc, hex(pc))
-        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tags, tagsd)
+        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tags, tagsd, LRU)
         reg_arr = data_set[1]
         pc=data_set[2]
         cycle=data_set[3]
