@@ -104,6 +104,16 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU):#pop culture reference
         miss()
     elif oldb1 != cache[3]:
         hit()
+    #part 3 c
+    #There will be 4 blocks, each containing 2 wds
+    #If we need to replace a block, we replace least recently used
+    #F.A cache permits data to be stored in any cache block instead of
+    #forcing each memory addrr into one particular block
+    #tag index = 16 (uses all bits)
+    print("Running Fully-associated cache")
+    tagc = int(Addr[0:16], 2)
+    print("Tag: ", tagc)
+
     #part 3 d
     #block = 1 bit
     #set index = log(4) = 2 bit
