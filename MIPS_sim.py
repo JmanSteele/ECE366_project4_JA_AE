@@ -20,7 +20,7 @@ def hit():
     print("HIT! Loaded from cache...")
     return
 #this is where the cache function will be performed
-def cacheMeOusside(Addr, cache, tags, tagsd, LRU):#pop culture reference
+def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture reference
     #part 3 a
     #log(16) = 4 bits   <---I'm going by the example Rao gave us in class for DM
     #[b3 b2 b1 b0]  in word offset
@@ -111,9 +111,22 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU):#pop culture reference
     #forcing each memory addrr into one particular block
     #tag index = 16 (uses all bits)
     print("Running Fully-associated cache")
-    tagc = int(Addr[0:16], 2)
+    #created an array called tagc[0, 1, 2, 3]
+    #that contains 3 tags
+    #Also created array LRUC[miss,hit] counter for part c
+    tagc[0] = int(Addr[0:11], 2)
     print("Tag: ", tagc)
+    bo = int(Addr[11:12], 2)
+    print( "Block number: ", bo)
+    word = int(Addr[12:13], 2)
+    print("Offset in Block: ", word)
+    if tagc[0] == Addr[0:11]:
+        hit()
+        LRUC[0] += 1
+        
+    
 
+        
     #part 3 d
     #block = 1 bit
     #set index = log(4) = 2 bit
@@ -236,7 +249,7 @@ def file_to_array(file):
         return_array.append(line)
     return return_array
 
-def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tags, tagsd, LRU):
+def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tags, tagsd, LRU, tagc, LRUC):
     if op[0:6]=="000000" and op[26:32]=="100000":
         print("ADD")
         rs=int(op[6:11], 2)
@@ -440,7 +453,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         print("KK:", kk)       #I print this in case i need to debug
                                # "kk" is just a value i stored the offset+register in
                                #plus i didn't know what to call this value
-        cacheMeOusside(kk, cache, tags, tagsd, LRU) #jump to function that performs the cache assignments (part 3)
+        cacheMeOusside(kk, cache, tags, tagsd, LRU, tagc, LRUC) #jump to function that performs the cache assignments (part 3)
     elif op[0:6]=="101011":
         print("SW")
         rs=int(op[6:11], 2)
@@ -459,13 +472,15 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         cycle[4]+=1
         percentage[2]+=1     #Memory based instruction
         x+=1
-    return [op, reg_arr, pc, cycle, x, cache, tags, tagsd, LRU]
+    return [op, reg_arr, pc, cycle, x, cache, tags, tagsd, LRU, tagc, LRUC]
 #sim: simulates the MIPS hex code
 #inputs: file name of txt that carries the instructions
 def sim(MIPS_HEX):
     LRU=numpy.zeros((2,4))  #this will be matrix for LRU
+    LRUC=[0,0] #[miss, hit] counter for part c
     tags=[0, 0, 0, 0, 0, 0]  #these tags are [a0, a1, b0, b1, b2, b3]
     tagsd=numpy.zeros((2,4))  #this will be a matrix or tags of part d
+    tagc = [0,0,0,0]
     cache=[0, 0, 0, 0, 0, 0, 0, 0]  #[part a miss, part a hit, part b miss...part c hit]
     x=0   #this is to configure pc back to 1 increments instead of 4 so I can make it easier to read my input files
     pc = 0 #initialize pc and register array
@@ -478,12 +493,12 @@ def sim(MIPS_HEX):
     hazard[2] = 0
     instr_mem_input = open(MIPS_HEX, "r")#read file for programming instructions
     instr_mem = file_to_array(instr_mem_input)
-    dic=0   #dynamic instruction will be counted
+    dic = 0   #dynamic instruction will be counted
     i=1      #used to printout hazards when ever they occur
     while x < len(instr_mem):
         op = instr_mem[x]
         print("PC: ", pc, hex(pc))
-        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tags, tagsd, LRU)
+        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tags, tagsd, LRU,tagc, LRUC)
         reg_arr = data_set[1]
         pc=data_set[2]
         cycle=data_set[3]
@@ -547,10 +562,10 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_a.txt")
+sim("sample_a.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_c.txt")
+#sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_d.txt")
