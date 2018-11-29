@@ -113,17 +113,30 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
     print("Running Fully-associated cache")
     #created an array called tagc[0, 1, 2, 3]
     #that contains 3 tags
-    #Also created array LRUC[miss,hit] counter for part c
-    tagc[0] = int(Addr[0:11], 2)
-    print("Tag: ", tagc)
-    bo = int(Addr[11:12], 2)
+    #Also created array LRUC counter for part c
+    #need to cache
+    tag = int(Addr[0:11], 2)
+    print("Tag: ", tag)
+    bo = int(Addr[11:13], 2)
     print( "Block number: ", bo)
-    word = int(Addr[12:13], 2)
+    word = int(Addr[14], 2)
     print("Offset in Block: ", word)
-    if tagc[0] == Addr[0:11]:
-        hit()
-        LRUC[0] += 1
-        
+    flag=1
+    if tagc[bo] == tag:  #first we check the corresponding block from mem[addr]
+        hit()           #call hit function
+        LRUC[bo] += 1   #LRU for part c is increased
+        tagc[bo] = tag  #update the tag in cache for part c
+        print("Part C LRU: ", LRUC)
+        cache[5]+=1     #increase hit counter
+        flag=0          #change the flag value to 0
+                        #originally this was a for loop, that's why there's a flag
+    if flag ==1:        #this flag ==1 means there was a miss
+        miss()          #call miss function
+        LRUC[bo]+=1     #update LRU
+        tagc[bo]=tag    #update tag
+        cache[4]+=1     #update miss counter
+            
+    
     
 
         
@@ -234,7 +247,7 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
         hit()
     print("2 way set cache: \n", tagsd)
     print("LRU: \n", LRU)
-    return [cache, tags, tagsd, LRU]        #return cache and tag values
+    return [cache, tags, tagsd, LRU, tagc, LRUC]        #return cache and tag values
     
 def file_to_array(file):
     return_array = []
@@ -476,11 +489,11 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
 #sim: simulates the MIPS hex code
 #inputs: file name of txt that carries the instructions
 def sim(MIPS_HEX):
-    LRU=numpy.zeros((2,4))  #this will be matrix for LRU
-    LRUC=[0,0] #[miss, hit] counter for part c
+    LRU=numpy.zeros((2,4))  #this will be matrix for LRU part d
+    LRUC=[0, 0, 0, 0] #counter for part c
     tags=[0, 0, 0, 0, 0, 0]  #these tags are [a0, a1, b0, b1, b2, b3]
     tagsd=numpy.zeros((2,4))  #this will be a matrix or tags of part d
-    tagc = [0,0,0,0]
+    tagc = [0,0,0,0] #tags for part c
     cache=[0, 0, 0, 0, 0, 0, 0, 0]  #[part a miss, part a hit, part b miss...part c hit]
     x=0   #this is to configure pc back to 1 increments instead of 4 so I can make it easier to read my input files
     pc = 0 #initialize pc and register array
@@ -534,19 +547,25 @@ def sim(MIPS_HEX):
     print("Total times accessed cache DM 4 words, 2 blocks: ", cashmoney)
     print("Total hits: ", cache[1])
     print("Total misses: ", cache[0])
-    biggiesmalls = 100*(cache[1]/(cache[0]+cache[1]))
+    biggiesmalls = round(100*(cache[1]/(cache[0]+cache[1])))
     print("Cache Hit Ratio: ", biggiesmalls, "%")
     print("Total times accessed cache DM 2 words, 4 blocks: ", cashmoney)
     print("Total hits: ", cache[3])
     print("Total misses: ", cache[2])
-    biggiesmalls =100*(cache[3]/(cache[2]+cache[3]))
+    biggiesmalls =round(100*(cache[3]/(cache[2]+cache[3])))
+    print("Cache Hit Ratio: ", biggiesmalls, "%")
+    cachemoney=cache[4] + cache[5]
+    print("Total times accessed cache from fully associative cache:", cachemoney)
+    print("Total hits: ", cache[5])
+    print("Total misses: ", cache[4])
+    biggiesmalls=round(100*(cache[5]/(cache[4]+cache[5])))
     print("Cache Hit Ratio: ", biggiesmalls, "%")
     cashmoney= cache[6] + cache[7]
     print("Total times accessed cache from set associative 2-way: ", cashmoney)
     print("Total hits: ", cache[7])
     print("Total misses: ", cache[6])
-    biggiesmalls = 100*(cache[7]/(cache[6]+cache[7]))
-    print("Cache Hit Ratio: ", biggiesmalls)
+    biggiesmalls = round(100*(cache[7]/(cache[6]+cache[7])))
+    print("Cache Hit Ratio: ", biggiesmalls, "%")
     i=0
     for i in range(0, 4096, 4):
         if int(memREE[i]) != 0:
@@ -562,10 +581,10 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_a.txt")
+#sim("sample_a.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_b.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_c.txt")
+sim("sample_c.txt")
 #print("\n\n\n\n\n\n\n\n")
 #sim("sample_d.txt")
