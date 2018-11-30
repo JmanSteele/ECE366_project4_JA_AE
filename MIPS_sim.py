@@ -20,7 +20,7 @@ def hit():
     print("HIT! Loaded from cache...")
     return
 #this is where the cache function will be performed
-def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture reference
+def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC,valida,validb,validc,validd):#pop culture reference
     #part 3 a
     #log(16) = 4 bits   <---I'm going by the example Rao gave us in class for DM
     #[b3 b2 b1 b0]  in word offset
@@ -42,14 +42,18 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
         if taga != tags[0]:
             cache[0]+=1   #increasing miss counter when the tags don't match from
             tags[0] = taga  #replacing the tag for future reference
+            valida[0]=1
         elif taga == tags[0]:
             cache[1]+=1     #increase hit counter
             tags[0]=taga
+            valida[0]=1
     elif blocka == 1:   #this will check in second block (block 1)
         if taga != tags[1]:   #tags are not equal to eachother
             cache[0]+=1    #increase miss counter
             tags[1] = taga      #replace tag for block 1
+            valida[1]=1
         elif taga == tags[1]:   #part a has a hit for block 1
+            valida[1]=1
             cache[1]+=1          #hit counter increase
             tags[1]=taga         #In the time spent debugging, I thought
                                  #"What if I replace tag again anyway? That might work"
@@ -76,30 +80,38 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
         if taga != tags[2]: #I'm going to reuse variable 'taga' since the tag field
             cache[2]+=1     # is also 11 bit, the same as part a
             tags[2]=taga
+            validb[0]=1
         elif taga==tags[2]:
             cache[3]+=1
             tags[2]=taga
+            validb[0]=1
     elif blockb==1:
         if taga !=tags[3]:
             cache[2]+=1
             tags[3]=taga
+            validb[1]=1
         elif taga==tags[3]:
             cache[3]+=1
             tags[3]=taga
+            validb[1]=1
     elif blockb==2:
         if taga !=tags[4]:
             cache[2]+=1
             tags[4]=taga
+            validb[2]=1
         elif taga==tags[4]:
             cache[3]+=1
             tags[4]=taga
+            validb[2]=1
     elif blockb==3:
         if taga !=tags[5]:
             cache[2]+=1
             tags[5]=taga
+            validb[3]=1
         elif taga==tags[5]:
             cache[3]+=1
             tags[5]=taga
+            validb[3]=1
     if oldb != cache[2]:
         miss()
     elif oldb1 != cache[3]:
@@ -126,6 +138,7 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
         hit()           #call hit function
         LRUC[bo] += 1   #LRU for part c is increased
         tagc[bo] = tag  #update the tag in cache for part c
+        validc[bo]=1
         print("Part C LRU: ", LRUC)
         cache[5]+=1     #increase hit counter
         flag=0          #change the flag value to 0
@@ -135,6 +148,7 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
         LRUC[bo]+=1     #update LRU
         tagc[bo]=tag    #update tag
         cache[4]+=1     #update miss counter
+        validc[bo]=1
             
     
     
@@ -159,11 +173,14 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
             if LRU[0][0] < LRU[0][1]: #we're checking now which block was least used
                 tagsd[0][0] = tagd      #store the tag in cache if this was block was least used
                 LRU[0][0] += 1          #incremement this block so we know it is used once more
+                validd[0][0]=1
             elif LRU[0][0] > LRU[0][1]:  #the same thing happens here except under opposite conditions
                 tagsd[0][1] = tagd
                 LRU[0][1] += 1
+                validd[0][1]=1
             else:
                 tagsd[0][0] = tagd
+                validd[0][0]=1
                 LRU[0][0] += 1      #this should be activated for the initial
                                   #cache access of this block
                                   #or for when both blocks are being used the same amount
@@ -171,21 +188,26 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
             cache[7] += 1
             tagsd[0][0] = tagd
             LRU[0][0] += 1
+            validd[0][0]=1
         elif tagd == tagsd[0][1]:
             cache[7] += 1
             tagsd[0][1] = tagd
             LRU[0][1] += 1
-    elif si == 1 or si == 5:
+            validd[0][1]=1
+    elif si == 1:
         if tagd != tagsd[1][0] and tagd != tagsd[1][1]:
             cache[6] += 1           #increasing miss counter
             if LRU[1][0] < LRU[1][1]: #we're checking now which block was least used
                 tagsd[1][0] = tagd      #store the tag in cache if this was block was least used
+                validd[1][0]=1
                 LRU[1][0] += 1          #incremement this block so we know it is used once more
             elif LRU[1][0] > LRU[1][1]:  #the same thing happens here except under opposite conditions
                 tagsd[1][1] = tagd
                 LRU[1][1] += 1
+                validd[1][1]=1
             else:
                 tagsd[1][0] = tagd
+                validd[1][0]=1
                 LRU[1][0] += 1      #this should be activated for the initial
                                   #cache access of this block
                                   #or for when both blocks are being used the same amount
@@ -193,21 +215,26 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
             cache[7] += 1
             tagsd[1][0] = tagd
             LRU[1][0] += 1
+            validd[1][0]=1
         elif tagd == tagsd[1][1]:
             cache[7] += 1
             tagsd[1][1] = tagd
             LRU[1][1] += 1
+            validd[1][1]=1
     elif si == 2 or si == 6:
         if tagd != tagsd[2][0] and tagd != tagsd[2][1]:
             cache[6] += 1           #increasing miss counter
             if LRU[2][0] < LRU[2][1]: #we're checking now which block was least used
                 tagsd[2][0] = tagd      #store the tag in cache if this was block was least used
+                validd[2][0]=1
                 LRU[2][0] += 1          #incremement this block so we know it is used once more
             elif LRU[2][0] > LRU[2][1]:  #the same thing happens here except under opposite conditions
                 tagsd[2][1] = tagd
+                validd[2][1]=1
                 LRU[2][1] += 1
             else:
                 tagsd[2][0] = tagd
+                validd[2][0]=1
                 LRU[2][0] += 1      #this should be activated for the initial
                                   #cache access of this block
                                   #or for when both blocks are being used the same amount
@@ -215,21 +242,26 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
             cache[7] += 1
             tagsd[2][0] = tagd
             LRU[2][0] += 1
+            validd[2][0]=1
         elif tagd == tagsd[2][1]:
             cache[7] += 1
             tagsd[2][1] = tagd
             LRU[2][1] += 1
+            validd[2][1]=1
     elif si == 3 or si ==7:
         if tagd != tagsd[3][0] and tagd != tagsd[3][1]:
             cache[6] += 1           #increasing miss counter
             if LRU[3][0] < LRU[3][1]: #we're checking now which block was least used
                 tagsd[3][0] = tagd      #store the tag in cache if this was block was least used
                 LRU[3][0] += 1          #incremement this block so we know it is used once more
+                validd[3][0]=1
             elif LRU[3][0] > LRU[3][1]:  #the same thing happens here except under opposite conditions
                 tagsd[3][1] = tagd
                 LRU[3][1] += 1
+                validd[3][1]=1
             else:
                 tagsd[3][0] = tagd
+                validd[3][0]=1
                 LRU[3][0] += 1      #this should be activated for the initial
                                   #cache access of this block
                                   #or for when both blocks are being used the same amount
@@ -237,17 +269,19 @@ def cacheMeOusside(Addr, cache, tags, tagsd, LRU,tagc, LRUC):#pop culture refere
             cache[7] += 1
             tagsd[3][0] = tagd
             LRU[3][0] += 1
+            validd[3][0]=1
         elif tagd == tagsd[3][1]:
             cache[7] += 1
             tagsd[3][1] = tagd
             LRU[3][1] += 1
+            validd[3][1]=1
     if old != cache[6]:
         miss()
     elif old1 !=cache[7]:
         hit()
     print("2 way set cache: \n", tagsd)
     print("LRU: \n", LRU)
-    return [cache, tags, tagsd, LRU, tagc, LRUC]        #return cache and tag values
+    return [cache, tags, tagsd, LRU, tagc, LRUC, valida, validb, validc, validd]        #return cache and tag values
     
 def file_to_array(file):
     return_array = []
@@ -262,7 +296,7 @@ def file_to_array(file):
         return_array.append(line)
     return return_array
 
-def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tags, tagsd, LRU, tagc, LRUC):
+def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, tags, tagsd, LRU, tagc, LRUC, valida, validb, validc, validd):
     if op[0:6]=="000000" and op[26:32]=="100000":
         print("ADD")
         rs=int(op[6:11], 2)
@@ -466,7 +500,7 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         print("KK:", kk)       #I print this in case i need to debug
                                # "kk" is just a value i stored the offset+register in
                                #plus i didn't know what to call this value
-        cacheMeOusside(kk, cache, tags, tagsd, LRU, tagc, LRUC) #jump to function that performs the cache assignments (part 3)
+        cacheMeOusside(kk, cache, tags, tagsd, LRU, tagc, LRUC, valida, validb, validc, validd) #jump to function that performs the cache assignments (part 3)
     elif op[0:6]=="101011":
         print("SW")
         rs=int(op[6:11], 2)
@@ -485,18 +519,22 @@ def execute_operation(op, reg_arr, pc, cycle, x, percentage,hazard, dic, cache, 
         cycle[4]+=1
         percentage[2]+=1     #Memory based instruction
         x+=1
-    return [op, reg_arr, pc, cycle, x, cache, tags, tagsd, LRU, tagc, LRUC]
+    return [op, reg_arr, pc, cycle, x, cache, tags, tagsd, LRU, tagc, LRUC, valida, validb, validc, validd]
 #sim: simulates the MIPS hex code
 #inputs: file name of txt that carries the instructions
-def sim(MIPS_HEX):
-    LRU=numpy.zeros((2,4))  #this will be matrix for LRU part d
+def sim(MIPS_HEX, output):
+    LRU=numpy.zeros((4,2))  #this will be matrix for LRU part d
     LRUC=[0, 0, 0, 0] #counter for part c
     tags=[0, 0, 0, 0, 0, 0]  #these tags are [a0, a1, b0, b1, b2, b3]
-    tagsd=numpy.zeros((2,4))  #this will be a matrix or tags of part d
+    tagsd=numpy.zeros((4,2))  #this will be a matrix or tags of part d
     tagc = [0,0,0,0] #tags for part c
     cache=[0, 0, 0, 0, 0, 0, 0, 0]  #[part a miss, part a hit, part b miss...part c hit]
     x=0   #this is to configure pc back to 1 increments instead of 4 so I can make it easier to read my input files
     pc = 0 #initialize pc and register array
+    valida=[0, 0]
+    validb=[0, 0, 0, 0]
+    validd=numpy.zeros((4, 2))
+    validc=[0, 0, 0, 0]
     reg_arr = [0, 0, 0, 0, 0, 0, 0, 0] #registers [$0, $1, $2, $3, $4, $5, $6, $7]
     cycle=[0, 0, 0, 0, 0, 0] #this array will work like so [single cycle, multi cycle, pipeline, 3cycle, 4cycle, 5cycle]
     #create file variables from file name strings
@@ -506,12 +544,13 @@ def sim(MIPS_HEX):
     hazard[2] = 0
     instr_mem_input = open(MIPS_HEX, "r")#read file for programming instructions
     instr_mem = file_to_array(instr_mem_input)
+    yay=open(output, "a+")
     dic = 0   #dynamic instruction will be counted
     i=1      #used to printout hazards when ever they occur
     while x < len(instr_mem):
         op = instr_mem[x]
-        print("PC: ", pc, hex(pc))
-        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tags, tagsd, LRU,tagc, LRUC)
+        print("PC: ", pc)
+        data_set = execute_operation(op, reg_arr, pc, cycle, x, percentage, hazard,dic, cache, tags, tagsd, LRU,tagc, LRUC, valida, validb, validc, validd)
         reg_arr = data_set[1]
         pc=data_set[2]
         cycle=data_set[3]
@@ -549,23 +588,27 @@ def sim(MIPS_HEX):
     print("Total misses: ", cache[0])
     biggiesmalls = round(100*(cache[1]/(cache[0]+cache[1])))
     print("Cache Hit Ratio: ", biggiesmalls, "%")
+    print("Valid bits:", valida)
     print("Total times accessed cache DM 2 words, 4 blocks: ", cashmoney)
     print("Total hits: ", cache[3])
     print("Total misses: ", cache[2])
     biggiesmalls =round(100*(cache[3]/(cache[2]+cache[3])))
     print("Cache Hit Ratio: ", biggiesmalls, "%")
+    print("Valid bits:", validb)
     cachemoney=cache[4] + cache[5]
     print("Total times accessed cache from fully associative cache:", cachemoney)
     print("Total hits: ", cache[5])
     print("Total misses: ", cache[4])
     biggiesmalls=round(100*(cache[5]/(cache[4]+cache[5])))
     print("Cache Hit Ratio: ", biggiesmalls, "%")
+    print("Valid bits:", validc)
     cashmoney= cache[6] + cache[7]
     print("Total times accessed cache from set associative 2-way: ", cashmoney)
     print("Total hits: ", cache[7])
     print("Total misses: ", cache[6])
     biggiesmalls = round(100*(cache[7]/(cache[6]+cache[7])))
     print("Cache Hit Ratio: ", biggiesmalls, "%")
+    print("Valid bits:", validd)
     i=0
     for i in range(0, 4096, 4):
         if int(memREE[i]) != 0:
@@ -581,10 +624,10 @@ def sim(MIPS_HEX):
 memREE = [0]*4096 #initialize to list of 4096 none's
 #sim("i_mem.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_a.txt")
+#sim("sample_a.txt", "p4_output_imem_A1.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_b.txt")
+#sim("sample_b.txt", "p4_output_imem_A2.txt")
 #print("\n\n\n\n\n\n\n\n")
-sim("sample_c.txt")
+#sim("sample_c.txt", "p4_output_imem_B1.txt")
 #print("\n\n\n\n\n\n\n\n")
-#sim("sample_d.txt")
+sim("sample_d.txt", "p4_out_imem_B2.txt")

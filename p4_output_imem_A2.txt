@@ -1,0 +1,2906 @@
+ECE 366 Project 4 MIPS simulator
+PC:  0
+ADDI
+RS: $ 0
+RT: $ 1
+imm:  3
+Result stored in RT is : 3
+X:  1
+OP:  00100000000000010000000000000011
+Register Array: [0, 3, 0, 0, 0, 0, 0, 0]
+Cycle: [1, 4, 1, 0, 1, 0]
+D.I.C:  1
+
+
+PC:  4
+ADDI
+RS: $ 0
+RT: $ 2
+imm:  80
+Result stored in RT is : 80
+X:  2
+OP:  00100000000000100000000001010000
+Register Array: [0, 3, 80, 0, 0, 0, 0, 0]
+Cycle: [2, 8, 2, 0, 2, 0]
+D.I.C:  2
+
+
+PC:  8
+SW
+Register and its value: register 1 3
+Offset:  8192
+memory location:  80
+What got stored in memory? 3
+OP:  10101100010000010010000000000000
+Register Array: [0, 3, 80, 0, 0, 0, 0, 0]
+Cycle: [3, 12, 3, 0, 3, 0]
+D.I.C:  3
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 76
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, 3, 76, 0, 0, 0, 0, 0]
+Cycle: [4, 16, 4, 0, 4, 0]
+D.I.C:  4
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, 3, 76, 0, 0, 0, 0, 0]
+Cycle: [5, 19, 5, 1, 4, 0]
+D.I.C:  5
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  1
+PC:  20
+ADD
+RS register: $ 1 3
+RT register: $ 1 3
+RD register: $ 1
+The result stored in Register RD is:  6
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, 6, 76, 0, 0, 0, 0, 0]
+Cycle: [6, 23, 6, 1, 5, 0]
+D.I.C:  6
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  -6
+OP:  00000000000000010000100000100010
+Register Array: [0, -6, 76, 0, 0, 0, 0, 0]
+Cycle: [7, 27, 7, 1, 6, 0]
+D.I.C:  7
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : -3
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, -3, 76, 0, 0, 0, 0, 0]
+Cycle: [8, 31, 8, 1, 7, 0]
+D.I.C:  8
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, -3, 76, 0, 0, 0, 0, 0]
+Cycle: [9, 34, 10, 2, 7, 0]
+D.I.C:  9
+
+
+PC:  8
+SW
+Register and its value: register 1 -3
+Offset:  8192
+memory location:  76
+What got stored in memory? -3
+OP:  10101100010000010010000000000000
+Register Array: [0, -3, 76, 0, 0, 0, 0, 0]
+Cycle: [10, 38, 11, 2, 8, 0]
+D.I.C:  10
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 72
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, -3, 72, 0, 0, 0, 0, 0]
+Cycle: [11, 42, 12, 2, 9, 0]
+D.I.C:  11
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, -3, 72, 0, 0, 0, 0, 0]
+Cycle: [12, 45, 13, 3, 9, 0]
+D.I.C:  12
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  2
+PC:  20
+ADD
+RS register: $ 1 -3
+RT register: $ 1 -3
+RD register: $ 1
+The result stored in Register RD is:  -6
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, -6, 72, 0, 0, 0, 0, 0]
+Cycle: [13, 49, 14, 3, 10, 0]
+D.I.C:  13
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  6
+OP:  00000000000000010000100000100010
+Register Array: [0, 6, 72, 0, 0, 0, 0, 0]
+Cycle: [14, 53, 15, 3, 11, 0]
+D.I.C:  14
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : 9
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, 9, 72, 0, 0, 0, 0, 0]
+Cycle: [15, 57, 16, 3, 12, 0]
+D.I.C:  15
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, 9, 72, 0, 0, 0, 0, 0]
+Cycle: [16, 60, 18, 4, 12, 0]
+D.I.C:  16
+
+
+PC:  8
+SW
+Register and its value: register 1 9
+Offset:  8192
+memory location:  72
+What got stored in memory? 9
+OP:  10101100010000010010000000000000
+Register Array: [0, 9, 72, 0, 0, 0, 0, 0]
+Cycle: [17, 64, 19, 4, 13, 0]
+D.I.C:  17
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 68
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, 9, 68, 0, 0, 0, 0, 0]
+Cycle: [18, 68, 20, 4, 14, 0]
+D.I.C:  18
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, 9, 68, 0, 0, 0, 0, 0]
+Cycle: [19, 71, 21, 5, 14, 0]
+D.I.C:  19
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  3
+PC:  20
+ADD
+RS register: $ 1 9
+RT register: $ 1 9
+RD register: $ 1
+The result stored in Register RD is:  18
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, 18, 68, 0, 0, 0, 0, 0]
+Cycle: [20, 75, 22, 5, 15, 0]
+D.I.C:  20
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  -18
+OP:  00000000000000010000100000100010
+Register Array: [0, -18, 68, 0, 0, 0, 0, 0]
+Cycle: [21, 79, 23, 5, 16, 0]
+D.I.C:  21
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : -15
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, -15, 68, 0, 0, 0, 0, 0]
+Cycle: [22, 83, 24, 5, 17, 0]
+D.I.C:  22
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, -15, 68, 0, 0, 0, 0, 0]
+Cycle: [23, 86, 26, 6, 17, 0]
+D.I.C:  23
+
+
+PC:  8
+SW
+Register and its value: register 1 -15
+Offset:  8192
+memory location:  68
+What got stored in memory? -15
+OP:  10101100010000010010000000000000
+Register Array: [0, -15, 68, 0, 0, 0, 0, 0]
+Cycle: [24, 90, 27, 6, 18, 0]
+D.I.C:  24
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 64
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, -15, 64, 0, 0, 0, 0, 0]
+Cycle: [25, 94, 28, 6, 19, 0]
+D.I.C:  25
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, -15, 64, 0, 0, 0, 0, 0]
+Cycle: [26, 97, 29, 7, 19, 0]
+D.I.C:  26
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  4
+PC:  20
+ADD
+RS register: $ 1 -15
+RT register: $ 1 -15
+RD register: $ 1
+The result stored in Register RD is:  -30
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, -30, 64, 0, 0, 0, 0, 0]
+Cycle: [27, 101, 30, 7, 20, 0]
+D.I.C:  27
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  30
+OP:  00000000000000010000100000100010
+Register Array: [0, 30, 64, 0, 0, 0, 0, 0]
+Cycle: [28, 105, 31, 7, 21, 0]
+D.I.C:  28
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : 33
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, 33, 64, 0, 0, 0, 0, 0]
+Cycle: [29, 109, 32, 7, 22, 0]
+D.I.C:  29
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, 33, 64, 0, 0, 0, 0, 0]
+Cycle: [30, 112, 34, 8, 22, 0]
+D.I.C:  30
+
+
+PC:  8
+SW
+Register and its value: register 1 33
+Offset:  8192
+memory location:  64
+What got stored in memory? 33
+OP:  10101100010000010010000000000000
+Register Array: [0, 33, 64, 0, 0, 0, 0, 0]
+Cycle: [31, 116, 35, 8, 23, 0]
+D.I.C:  31
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 60
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, 33, 60, 0, 0, 0, 0, 0]
+Cycle: [32, 120, 36, 8, 24, 0]
+D.I.C:  32
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, 33, 60, 0, 0, 0, 0, 0]
+Cycle: [33, 123, 37, 9, 24, 0]
+D.I.C:  33
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  5
+PC:  20
+ADD
+RS register: $ 1 33
+RT register: $ 1 33
+RD register: $ 1
+The result stored in Register RD is:  66
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, 66, 60, 0, 0, 0, 0, 0]
+Cycle: [34, 127, 38, 9, 25, 0]
+D.I.C:  34
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  -66
+OP:  00000000000000010000100000100010
+Register Array: [0, -66, 60, 0, 0, 0, 0, 0]
+Cycle: [35, 131, 39, 9, 26, 0]
+D.I.C:  35
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : -63
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, -63, 60, 0, 0, 0, 0, 0]
+Cycle: [36, 135, 40, 9, 27, 0]
+D.I.C:  36
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, -63, 60, 0, 0, 0, 0, 0]
+Cycle: [37, 138, 42, 10, 27, 0]
+D.I.C:  37
+
+
+PC:  8
+SW
+Register and its value: register 1 -63
+Offset:  8192
+memory location:  60
+What got stored in memory? -63
+OP:  10101100010000010010000000000000
+Register Array: [0, -63, 60, 0, 0, 0, 0, 0]
+Cycle: [38, 142, 43, 10, 28, 0]
+D.I.C:  38
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 56
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, -63, 56, 0, 0, 0, 0, 0]
+Cycle: [39, 146, 44, 10, 29, 0]
+D.I.C:  39
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, -63, 56, 0, 0, 0, 0, 0]
+Cycle: [40, 149, 45, 11, 29, 0]
+D.I.C:  40
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  6
+PC:  20
+ADD
+RS register: $ 1 -63
+RT register: $ 1 -63
+RD register: $ 1
+The result stored in Register RD is:  -126
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, -126, 56, 0, 0, 0, 0, 0]
+Cycle: [41, 153, 46, 11, 30, 0]
+D.I.C:  41
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  126
+OP:  00000000000000010000100000100010
+Register Array: [0, 126, 56, 0, 0, 0, 0, 0]
+Cycle: [42, 157, 47, 11, 31, 0]
+D.I.C:  42
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : 129
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, 129, 56, 0, 0, 0, 0, 0]
+Cycle: [43, 161, 48, 11, 32, 0]
+D.I.C:  43
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, 129, 56, 0, 0, 0, 0, 0]
+Cycle: [44, 164, 50, 12, 32, 0]
+D.I.C:  44
+
+
+PC:  8
+SW
+Register and its value: register 1 129
+Offset:  8192
+memory location:  56
+What got stored in memory? 129
+OP:  10101100010000010010000000000000
+Register Array: [0, 129, 56, 0, 0, 0, 0, 0]
+Cycle: [45, 168, 51, 12, 33, 0]
+D.I.C:  45
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 52
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, 129, 52, 0, 0, 0, 0, 0]
+Cycle: [46, 172, 52, 12, 34, 0]
+D.I.C:  46
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, 129, 52, 0, 0, 0, 0, 0]
+Cycle: [47, 175, 53, 13, 34, 0]
+D.I.C:  47
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  7
+PC:  20
+ADD
+RS register: $ 1 129
+RT register: $ 1 129
+RD register: $ 1
+The result stored in Register RD is:  258
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, 258, 52, 0, 0, 0, 0, 0]
+Cycle: [48, 179, 54, 13, 35, 0]
+D.I.C:  48
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  -258
+OP:  00000000000000010000100000100010
+Register Array: [0, -258, 52, 0, 0, 0, 0, 0]
+Cycle: [49, 183, 55, 13, 36, 0]
+D.I.C:  49
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : -255
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, -255, 52, 0, 0, 0, 0, 0]
+Cycle: [50, 187, 56, 13, 37, 0]
+D.I.C:  50
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, -255, 52, 0, 0, 0, 0, 0]
+Cycle: [51, 190, 58, 14, 37, 0]
+D.I.C:  51
+
+
+PC:  8
+SW
+Register and its value: register 1 -255
+Offset:  8192
+memory location:  52
+What got stored in memory? -255
+OP:  10101100010000010010000000000000
+Register Array: [0, -255, 52, 0, 0, 0, 0, 0]
+Cycle: [52, 194, 59, 14, 38, 0]
+D.I.C:  52
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 48
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, -255, 48, 0, 0, 0, 0, 0]
+Cycle: [53, 198, 60, 14, 39, 0]
+D.I.C:  53
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, -255, 48, 0, 0, 0, 0, 0]
+Cycle: [54, 201, 61, 15, 39, 0]
+D.I.C:  54
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  8
+PC:  20
+ADD
+RS register: $ 1 -255
+RT register: $ 1 -255
+RD register: $ 1
+The result stored in Register RD is:  -510
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, -510, 48, 0, 0, 0, 0, 0]
+Cycle: [55, 205, 62, 15, 40, 0]
+D.I.C:  55
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  510
+OP:  00000000000000010000100000100010
+Register Array: [0, 510, 48, 0, 0, 0, 0, 0]
+Cycle: [56, 209, 63, 15, 41, 0]
+D.I.C:  56
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : 513
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, 513, 48, 0, 0, 0, 0, 0]
+Cycle: [57, 213, 64, 15, 42, 0]
+D.I.C:  57
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, 513, 48, 0, 0, 0, 0, 0]
+Cycle: [58, 216, 66, 16, 42, 0]
+D.I.C:  58
+
+
+PC:  8
+SW
+Register and its value: register 1 513
+Offset:  8192
+memory location:  48
+What got stored in memory? 513
+OP:  10101100010000010010000000000000
+Register Array: [0, 513, 48, 0, 0, 0, 0, 0]
+Cycle: [59, 220, 67, 16, 43, 0]
+D.I.C:  59
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 44
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, 513, 44, 0, 0, 0, 0, 0]
+Cycle: [60, 224, 68, 16, 44, 0]
+D.I.C:  60
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, 513, 44, 0, 0, 0, 0, 0]
+Cycle: [61, 227, 69, 17, 44, 0]
+D.I.C:  61
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  9
+PC:  20
+ADD
+RS register: $ 1 513
+RT register: $ 1 513
+RD register: $ 1
+The result stored in Register RD is:  1026
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, 1026, 44, 0, 0, 0, 0, 0]
+Cycle: [62, 231, 70, 17, 45, 0]
+D.I.C:  62
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  -1026
+OP:  00000000000000010000100000100010
+Register Array: [0, -1026, 44, 0, 0, 0, 0, 0]
+Cycle: [63, 235, 71, 17, 46, 0]
+D.I.C:  63
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : -1023
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, -1023, 44, 0, 0, 0, 0, 0]
+Cycle: [64, 239, 72, 17, 47, 0]
+D.I.C:  64
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, -1023, 44, 0, 0, 0, 0, 0]
+Cycle: [65, 242, 74, 18, 47, 0]
+D.I.C:  65
+
+
+PC:  8
+SW
+Register and its value: register 1 -1023
+Offset:  8192
+memory location:  44
+What got stored in memory? -1023
+OP:  10101100010000010010000000000000
+Register Array: [0, -1023, 44, 0, 0, 0, 0, 0]
+Cycle: [66, 246, 75, 18, 48, 0]
+D.I.C:  66
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 40
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, -1023, 40, 0, 0, 0, 0, 0]
+Cycle: [67, 250, 76, 18, 49, 0]
+D.I.C:  67
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, -1023, 40, 0, 0, 0, 0, 0]
+Cycle: [68, 253, 77, 19, 49, 0]
+D.I.C:  68
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  10
+PC:  20
+ADD
+RS register: $ 1 -1023
+RT register: $ 1 -1023
+RD register: $ 1
+The result stored in Register RD is:  -2046
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, -2046, 40, 0, 0, 0, 0, 0]
+Cycle: [69, 257, 78, 19, 50, 0]
+D.I.C:  69
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  2046
+OP:  00000000000000010000100000100010
+Register Array: [0, 2046, 40, 0, 0, 0, 0, 0]
+Cycle: [70, 261, 79, 19, 51, 0]
+D.I.C:  70
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : 2049
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, 2049, 40, 0, 0, 0, 0, 0]
+Cycle: [71, 265, 80, 19, 52, 0]
+D.I.C:  71
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, 2049, 40, 0, 0, 0, 0, 0]
+Cycle: [72, 268, 82, 20, 52, 0]
+D.I.C:  72
+
+
+PC:  8
+SW
+Register and its value: register 1 2049
+Offset:  8192
+memory location:  40
+What got stored in memory? 2049
+OP:  10101100010000010010000000000000
+Register Array: [0, 2049, 40, 0, 0, 0, 0, 0]
+Cycle: [73, 272, 83, 20, 53, 0]
+D.I.C:  73
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 36
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, 2049, 36, 0, 0, 0, 0, 0]
+Cycle: [74, 276, 84, 20, 54, 0]
+D.I.C:  74
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, 2049, 36, 0, 0, 0, 0, 0]
+Cycle: [75, 279, 85, 21, 54, 0]
+D.I.C:  75
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  11
+PC:  20
+ADD
+RS register: $ 1 2049
+RT register: $ 1 2049
+RD register: $ 1
+The result stored in Register RD is:  4098
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, 4098, 36, 0, 0, 0, 0, 0]
+Cycle: [76, 283, 86, 21, 55, 0]
+D.I.C:  76
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  -4098
+OP:  00000000000000010000100000100010
+Register Array: [0, -4098, 36, 0, 0, 0, 0, 0]
+Cycle: [77, 287, 87, 21, 56, 0]
+D.I.C:  77
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : -4095
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, -4095, 36, 0, 0, 0, 0, 0]
+Cycle: [78, 291, 88, 21, 57, 0]
+D.I.C:  78
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, -4095, 36, 0, 0, 0, 0, 0]
+Cycle: [79, 294, 90, 22, 57, 0]
+D.I.C:  79
+
+
+PC:  8
+SW
+Register and its value: register 1 -4095
+Offset:  8192
+memory location:  36
+What got stored in memory? -4095
+OP:  10101100010000010010000000000000
+Register Array: [0, -4095, 36, 0, 0, 0, 0, 0]
+Cycle: [80, 298, 91, 22, 58, 0]
+D.I.C:  80
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 32
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, -4095, 32, 0, 0, 0, 0, 0]
+Cycle: [81, 302, 92, 22, 59, 0]
+D.I.C:  81
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, -4095, 32, 0, 0, 0, 0, 0]
+Cycle: [82, 305, 93, 23, 59, 0]
+D.I.C:  82
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  12
+PC:  20
+ADD
+RS register: $ 1 -4095
+RT register: $ 1 -4095
+RD register: $ 1
+The result stored in Register RD is:  -8190
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, -8190, 32, 0, 0, 0, 0, 0]
+Cycle: [83, 309, 94, 23, 60, 0]
+D.I.C:  83
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  8190
+OP:  00000000000000010000100000100010
+Register Array: [0, 8190, 32, 0, 0, 0, 0, 0]
+Cycle: [84, 313, 95, 23, 61, 0]
+D.I.C:  84
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : 8193
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, 8193, 32, 0, 0, 0, 0, 0]
+Cycle: [85, 317, 96, 23, 62, 0]
+D.I.C:  85
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, 8193, 32, 0, 0, 0, 0, 0]
+Cycle: [86, 320, 98, 24, 62, 0]
+D.I.C:  86
+
+
+PC:  8
+SW
+Register and its value: register 1 8193
+Offset:  8192
+memory location:  32
+What got stored in memory? 8193
+OP:  10101100010000010010000000000000
+Register Array: [0, 8193, 32, 0, 0, 0, 0, 0]
+Cycle: [87, 324, 99, 24, 63, 0]
+D.I.C:  87
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 28
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, 8193, 28, 0, 0, 0, 0, 0]
+Cycle: [88, 328, 100, 24, 64, 0]
+D.I.C:  88
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, 8193, 28, 0, 0, 0, 0, 0]
+Cycle: [89, 331, 101, 25, 64, 0]
+D.I.C:  89
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  13
+PC:  20
+ADD
+RS register: $ 1 8193
+RT register: $ 1 8193
+RD register: $ 1
+The result stored in Register RD is:  16386
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, 16386, 28, 0, 0, 0, 0, 0]
+Cycle: [90, 335, 102, 25, 65, 0]
+D.I.C:  90
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  -16386
+OP:  00000000000000010000100000100010
+Register Array: [0, -16386, 28, 0, 0, 0, 0, 0]
+Cycle: [91, 339, 103, 25, 66, 0]
+D.I.C:  91
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : -16383
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, -16383, 28, 0, 0, 0, 0, 0]
+Cycle: [92, 343, 104, 25, 67, 0]
+D.I.C:  92
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, -16383, 28, 0, 0, 0, 0, 0]
+Cycle: [93, 346, 106, 26, 67, 0]
+D.I.C:  93
+
+
+PC:  8
+SW
+Register and its value: register 1 -16383
+Offset:  8192
+memory location:  28
+What got stored in memory? -16383
+OP:  10101100010000010010000000000000
+Register Array: [0, -16383, 28, 0, 0, 0, 0, 0]
+Cycle: [94, 350, 107, 26, 68, 0]
+D.I.C:  94
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 24
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, -16383, 24, 0, 0, 0, 0, 0]
+Cycle: [95, 354, 108, 26, 69, 0]
+D.I.C:  95
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, -16383, 24, 0, 0, 0, 0, 0]
+Cycle: [96, 357, 109, 27, 69, 0]
+D.I.C:  96
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  14
+PC:  20
+ADD
+RS register: $ 1 -16383
+RT register: $ 1 -16383
+RD register: $ 1
+The result stored in Register RD is:  -32766
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, -32766, 24, 0, 0, 0, 0, 0]
+Cycle: [97, 361, 110, 27, 70, 0]
+D.I.C:  97
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  32766
+OP:  00000000000000010000100000100010
+Register Array: [0, 32766, 24, 0, 0, 0, 0, 0]
+Cycle: [98, 365, 111, 27, 71, 0]
+D.I.C:  98
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : 32769
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, 32769, 24, 0, 0, 0, 0, 0]
+Cycle: [99, 369, 112, 27, 72, 0]
+D.I.C:  99
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, 32769, 24, 0, 0, 0, 0, 0]
+Cycle: [100, 372, 114, 28, 72, 0]
+D.I.C:  100
+
+
+PC:  8
+SW
+Register and its value: register 1 32769
+Offset:  8192
+memory location:  24
+What got stored in memory? 32769
+OP:  10101100010000010010000000000000
+Register Array: [0, 32769, 24, 0, 0, 0, 0, 0]
+Cycle: [101, 376, 115, 28, 73, 0]
+D.I.C:  101
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 20
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, 32769, 20, 0, 0, 0, 0, 0]
+Cycle: [102, 380, 116, 28, 74, 0]
+D.I.C:  102
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, 32769, 20, 0, 0, 0, 0, 0]
+Cycle: [103, 383, 117, 29, 74, 0]
+D.I.C:  103
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  15
+PC:  20
+ADD
+RS register: $ 1 32769
+RT register: $ 1 32769
+RD register: $ 1
+The result stored in Register RD is:  65538
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, 65538, 20, 0, 0, 0, 0, 0]
+Cycle: [104, 387, 118, 29, 75, 0]
+D.I.C:  104
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  -65538
+OP:  00000000000000010000100000100010
+Register Array: [0, -65538, 20, 0, 0, 0, 0, 0]
+Cycle: [105, 391, 119, 29, 76, 0]
+D.I.C:  105
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : -65535
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, -65535, 20, 0, 0, 0, 0, 0]
+Cycle: [106, 395, 120, 29, 77, 0]
+D.I.C:  106
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, -65535, 20, 0, 0, 0, 0, 0]
+Cycle: [107, 398, 122, 30, 77, 0]
+D.I.C:  107
+
+
+PC:  8
+SW
+Register and its value: register 1 -65535
+Offset:  8192
+memory location:  20
+What got stored in memory? -65535
+OP:  10101100010000010010000000000000
+Register Array: [0, -65535, 20, 0, 0, 0, 0, 0]
+Cycle: [108, 402, 123, 30, 78, 0]
+D.I.C:  108
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 16
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, -65535, 16, 0, 0, 0, 0, 0]
+Cycle: [109, 406, 124, 30, 79, 0]
+D.I.C:  109
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, -65535, 16, 0, 0, 0, 0, 0]
+Cycle: [110, 409, 125, 31, 79, 0]
+D.I.C:  110
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  16
+PC:  20
+ADD
+RS register: $ 1 -65535
+RT register: $ 1 -65535
+RD register: $ 1
+The result stored in Register RD is:  -131070
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, -131070, 16, 0, 0, 0, 0, 0]
+Cycle: [111, 413, 126, 31, 80, 0]
+D.I.C:  111
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  131070
+OP:  00000000000000010000100000100010
+Register Array: [0, 131070, 16, 0, 0, 0, 0, 0]
+Cycle: [112, 417, 127, 31, 81, 0]
+D.I.C:  112
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : 131073
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, 131073, 16, 0, 0, 0, 0, 0]
+Cycle: [113, 421, 128, 31, 82, 0]
+D.I.C:  113
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, 131073, 16, 0, 0, 0, 0, 0]
+Cycle: [114, 424, 130, 32, 82, 0]
+D.I.C:  114
+
+
+PC:  8
+SW
+Register and its value: register 1 131073
+Offset:  8192
+memory location:  16
+What got stored in memory? 131073
+OP:  10101100010000010010000000000000
+Register Array: [0, 131073, 16, 0, 0, 0, 0, 0]
+Cycle: [115, 428, 131, 32, 83, 0]
+D.I.C:  115
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 12
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, 131073, 12, 0, 0, 0, 0, 0]
+Cycle: [116, 432, 132, 32, 84, 0]
+D.I.C:  116
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, 131073, 12, 0, 0, 0, 0, 0]
+Cycle: [117, 435, 133, 33, 84, 0]
+D.I.C:  117
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  17
+PC:  20
+ADD
+RS register: $ 1 131073
+RT register: $ 1 131073
+RD register: $ 1
+The result stored in Register RD is:  262146
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, 262146, 12, 0, 0, 0, 0, 0]
+Cycle: [118, 439, 134, 33, 85, 0]
+D.I.C:  118
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  -262146
+OP:  00000000000000010000100000100010
+Register Array: [0, -262146, 12, 0, 0, 0, 0, 0]
+Cycle: [119, 443, 135, 33, 86, 0]
+D.I.C:  119
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : -262143
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, -262143, 12, 0, 0, 0, 0, 0]
+Cycle: [120, 447, 136, 33, 87, 0]
+D.I.C:  120
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, -262143, 12, 0, 0, 0, 0, 0]
+Cycle: [121, 450, 138, 34, 87, 0]
+D.I.C:  121
+
+
+PC:  8
+SW
+Register and its value: register 1 -262143
+Offset:  8192
+memory location:  12
+What got stored in memory? -262143
+OP:  10101100010000010010000000000000
+Register Array: [0, -262143, 12, 0, 0, 0, 0, 0]
+Cycle: [122, 454, 139, 34, 88, 0]
+D.I.C:  122
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 8
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, -262143, 8, 0, 0, 0, 0, 0]
+Cycle: [123, 458, 140, 34, 89, 0]
+D.I.C:  123
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, -262143, 8, 0, 0, 0, 0, 0]
+Cycle: [124, 461, 141, 35, 89, 0]
+D.I.C:  124
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  18
+PC:  20
+ADD
+RS register: $ 1 -262143
+RT register: $ 1 -262143
+RD register: $ 1
+The result stored in Register RD is:  -524286
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, -524286, 8, 0, 0, 0, 0, 0]
+Cycle: [125, 465, 142, 35, 90, 0]
+D.I.C:  125
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  524286
+OP:  00000000000000010000100000100010
+Register Array: [0, 524286, 8, 0, 0, 0, 0, 0]
+Cycle: [126, 469, 143, 35, 91, 0]
+D.I.C:  126
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : 524289
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, 524289, 8, 0, 0, 0, 0, 0]
+Cycle: [127, 473, 144, 35, 92, 0]
+D.I.C:  127
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, 524289, 8, 0, 0, 0, 0, 0]
+Cycle: [128, 476, 146, 36, 92, 0]
+D.I.C:  128
+
+
+PC:  8
+SW
+Register and its value: register 1 524289
+Offset:  8192
+memory location:  8
+What got stored in memory? 524289
+OP:  10101100010000010010000000000000
+Register Array: [0, 524289, 8, 0, 0, 0, 0, 0]
+Cycle: [129, 480, 147, 36, 93, 0]
+D.I.C:  129
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 4
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, 524289, 4, 0, 0, 0, 0, 0]
+Cycle: [130, 484, 148, 36, 94, 0]
+D.I.C:  130
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+OP:  00010000010000000000000000000100
+Register Array: [0, 524289, 4, 0, 0, 0, 0, 0]
+Cycle: [131, 487, 149, 37, 94, 0]
+D.I.C:  131
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  19
+PC:  20
+ADD
+RS register: $ 1 524289
+RT register: $ 1 524289
+RD register: $ 1
+The result stored in Register RD is:  1048578
+X: 6
+OP:  00000000001000010000100000100000
+Register Array: [0, 1048578, 4, 0, 0, 0, 0, 0]
+Cycle: [132, 491, 150, 37, 95, 0]
+D.I.C:  132
+
+
+PC:  24
+SUB
+RS:  0
+RT:  1
+RD:  1
+Result:  -1048578
+OP:  00000000000000010000100000100010
+Register Array: [0, -1048578, 4, 0, 0, 0, 0, 0]
+Cycle: [133, 495, 151, 37, 96, 0]
+D.I.C:  133
+
+
+PC:  28
+ADDI
+RS: $ 1
+RT: $ 1
+imm:  3
+Result stored in RT is : -1048575
+X:  8
+OP:  00100000001000010000000000000011
+Register Array: [0, -1048575, 4, 0, 0, 0, 0, 0]
+Cycle: [134, 499, 152, 37, 97, 0]
+D.I.C:  134
+
+
+PC:  32
+BEQ
+RS:  3
+RT:  3
+---------------------Previous $ 1
+---------------------BEQ      $ 3
+offset when MSB is 1:  -7
+OFFset:  -7
+Branch Complete..Stalling..
+OP:  00010000011000111111111111111001
+Register Array: [0, -1048575, 4, 0, 0, 0, 0, 0]
+Cycle: [135, 502, 154, 38, 97, 0]
+D.I.C:  135
+
+
+PC:  8
+SW
+Register and its value: register 1 -1048575
+Offset:  8192
+memory location:  4
+What got stored in memory? -1048575
+OP:  10101100010000010010000000000000
+Register Array: [0, -1048575, 4, 0, 0, 0, 0, 0]
+Cycle: [136, 506, 155, 38, 98, 0]
+D.I.C:  136
+
+
+PC:  12
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  -4
+Result stored in RT is : 0
+X:  4
+OP:  00100000010000101111111111111100
+Register Array: [0, -1048575, 0, 0, 0, 0, 0, 0]
+Cycle: [137, 510, 156, 38, 99, 0]
+D.I.C:  137
+
+
+PC:  16
+BEQ
+RS:  2
+RT:  0
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+OFFset:  4
+Branch Complete..Stalling..
+OP:  00010000010000000000000000000100
+Register Array: [0, -1048575, 0, 0, 0, 0, 0, 0]
+Cycle: [138, 513, 158, 39, 99, 0]
+D.I.C:  138
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  20
+PC:  36
+ADDI
+RS: $ 0
+RT: $ 5
+imm:  40
+Result stored in RT is : 40
+X:  10
+OP:  00100000000001010000000000101000
+Register Array: [0, -1048575, 0, 0, 0, 40, 0, 0]
+Cycle: [139, 517, 159, 39, 100, 0]
+D.I.C:  139
+
+
+PC:  40
+LW
+Offset:  0
+memory:  0
+Register and its value: register 2 0
+KK: 0b10000000000000
+Running DM cache of 2 blocks, 4 words
+Offset for CACHE:  0b10000000000000 [0, 0, 0, 0, 0, 0]
+TAG : 256
+Block:  0
+4 bit offset:  0
+MISS! Replacing cache...
+Running DM cache of 4 blocks, 2 words
+Block:  0
+3 bit offset:  0
+MISS! Replacing cache...
+Running Fully-associated cache
+Tag:  256
+Block number:  0
+Offset in Block:  0
+MISS! Replacing cache...
+Running 2-way set associative cache
+Tag:  1024
+Set Index:  0
+Offset in Block:  0
+MISS! Replacing cache...
+2 way set cache: 
+ [[1024.    0.]
+ [   0.    0.]
+ [   0.    0.]
+ [   0.    0.]]
+LRU: 
+ [[1. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+OP:  10001100010000010010000000000000
+Register Array: [0, 0, 0, 0, 0, 40, 0, 0]
+Cycle: [140, 522, 161, 39, 100, 1]
+D.I.C:  140
+
+
+PC:  44
+SLT
+RS: $ 1
+RT: $ 0
+RD: $ 3
+Branch in progress...
+RD:  0
+OP:  00000000001000000001100000101010
+Register Array: [0, 0, 0, 0, 0, 40, 0, 0]
+Cycle: [141, 526, 163, 39, 101, 1]
+D.I.C:  141
+
+
+PC:  48
+BNE
+---------------------Previous $ 5
+---------------------BEQ      $ 3
+No Branch Necessary.
+OP:  00010100011000000000000000000001
+Register Array: [0, 0, 0, 0, 0, 40, 0, 0]
+Cycle: [142, 529, 164, 40, 101, 1]
+D.I.C:  142
+
+
+PC:  52
+ADD
+RS register: $ 4 0
+RT register: $ 1 0
+RD register: $ 4
+The result stored in Register RD is:  0
+X: 14
+OP:  00000000100000010010000000100000
+Register Array: [0, 0, 0, 0, 0, 40, 0, 0]
+Cycle: [143, 533, 165, 40, 102, 1]
+D.I.C:  143
+
+
+PC:  56
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  4
+Result stored in RT is : 4
+X:  15
+OP:  00100000010000100000000000000100
+Register Array: [0, 0, 4, 0, 0, 40, 0, 0]
+Cycle: [144, 537, 166, 40, 103, 1]
+D.I.C:  144
+
+
+PC:  60
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+offset when MSB is 1:  -6
+Branching..Stalling..
+OP:  00010100010001011111111111111010
+Register Array: [0, 0, 4, 0, 0, 40, 0, 0]
+Cycle: [145, 540, 168, 41, 103, 1]
+D.I.C:  145
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  21
+PC:  40
+LW
+Offset:  4
+memory:  -1048575
+Register and its value: register 2 4
+KK: 0b10000000000100
+Running DM cache of 2 blocks, 4 words
+Offset for CACHE:  0b10000000000100 [256, 0, 256, 0, 0, 0]
+TAG : 256
+Block:  0
+4 bit offset:  4
+HIT! Loaded from cache...
+Running DM cache of 4 blocks, 2 words
+Block:  0
+3 bit offset:  4
+HIT! Loaded from cache...
+Running Fully-associated cache
+Tag:  256
+Block number:  0
+Offset in Block:  0
+HIT! Loaded from cache...
+Part C LRU:  [2, 0, 0, 0]
+Running 2-way set associative cache
+Tag:  1024
+Set Index:  4
+Offset in Block:  0
+HIT! Loaded from cache...
+2 way set cache: 
+ [[1024.    0.]
+ [   0.    0.]
+ [   0.    0.]
+ [   0.    0.]]
+LRU: 
+ [[2. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+OP:  10001100010000010010000000000000
+Register Array: [0, -1048575, 4, 0, 0, 40, 0, 0]
+Cycle: [146, 545, 170, 41, 103, 2]
+D.I.C:  146
+
+
+PC:  44
+SLT
+RS: $ 1
+RT: $ 0
+RD: $ 3
+No Branch necessary
+RD:  1
+OP:  00000000001000000001100000101010
+Register Array: [0, -1048575, 4, 1, 0, 40, 0, 0]
+Cycle: [147, 549, 172, 41, 104, 2]
+D.I.C:  147
+
+
+PC:  48
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 3
+Branching..Stalling..
+OP:  00010100011000000000000000000001
+Register Array: [0, -1048575, 4, 1, 0, 40, 0, 0]
+Cycle: [148, 552, 174, 42, 104, 2]
+D.I.C:  148
+
+
+PC:  56
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  4
+Result stored in RT is : 8
+X:  15
+OP:  00100000010000100000000000000100
+Register Array: [0, -1048575, 8, 1, 0, 40, 0, 0]
+Cycle: [149, 556, 175, 42, 105, 2]
+D.I.C:  149
+
+
+PC:  60
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+offset when MSB is 1:  -6
+Branching..Stalling..
+OP:  00010100010001011111111111111010
+Register Array: [0, -1048575, 8, 1, 0, 40, 0, 0]
+Cycle: [150, 559, 177, 43, 105, 2]
+D.I.C:  150
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  22
+PC:  40
+LW
+Offset:  8
+memory:  524289
+Register and its value: register 2 8
+KK: 0b10000000001000
+Running DM cache of 2 blocks, 4 words
+Offset for CACHE:  0b10000000001000 [256, 0, 256, 0, 0, 0]
+TAG : 256
+Block:  0
+4 bit offset:  8
+HIT! Loaded from cache...
+Running DM cache of 4 blocks, 2 words
+Block:  1
+3 bit offset:  0
+MISS! Replacing cache...
+Running Fully-associated cache
+Tag:  256
+Block number:  1
+Offset in Block:  0
+MISS! Replacing cache...
+Running 2-way set associative cache
+Tag:  1025
+Set Index:  0
+Offset in Block:  0
+MISS! Replacing cache...
+2 way set cache: 
+ [[1024. 1025.]
+ [   0.    0.]
+ [   0.    0.]
+ [   0.    0.]]
+LRU: 
+ [[2. 1.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+OP:  10001100010000010010000000000000
+Register Array: [0, 524289, 8, 1, 0, 40, 0, 0]
+Cycle: [151, 564, 179, 43, 105, 3]
+D.I.C:  151
+
+
+PC:  44
+SLT
+RS: $ 1
+RT: $ 0
+RD: $ 3
+Branch in progress...
+RD:  0
+OP:  00000000001000000001100000101010
+Register Array: [0, 524289, 8, 0, 0, 40, 0, 0]
+Cycle: [152, 568, 181, 43, 106, 3]
+D.I.C:  152
+
+
+PC:  48
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 3
+No Branch Necessary.
+OP:  00010100011000000000000000000001
+Register Array: [0, 524289, 8, 0, 0, 40, 0, 0]
+Cycle: [153, 571, 182, 44, 106, 3]
+D.I.C:  153
+
+
+PC:  52
+ADD
+RS register: $ 4 0
+RT register: $ 1 524289
+RD register: $ 4
+The result stored in Register RD is:  524289
+X: 14
+OP:  00000000100000010010000000100000
+Register Array: [0, 524289, 8, 0, 524289, 40, 0, 0]
+Cycle: [154, 575, 183, 44, 107, 3]
+D.I.C:  154
+
+
+PC:  56
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  4
+Result stored in RT is : 12
+X:  15
+OP:  00100000010000100000000000000100
+Register Array: [0, 524289, 12, 0, 524289, 40, 0, 0]
+Cycle: [155, 579, 184, 44, 108, 3]
+D.I.C:  155
+
+
+PC:  60
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+offset when MSB is 1:  -6
+Branching..Stalling..
+OP:  00010100010001011111111111111010
+Register Array: [0, 524289, 12, 0, 524289, 40, 0, 0]
+Cycle: [156, 582, 186, 45, 108, 3]
+D.I.C:  156
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  23
+PC:  40
+LW
+Offset:  12
+memory:  -262143
+Register and its value: register 2 12
+KK: 0b10000000001100
+Running DM cache of 2 blocks, 4 words
+Offset for CACHE:  0b10000000001100 [256, 0, 256, 256, 0, 0]
+TAG : 256
+Block:  0
+4 bit offset:  12
+HIT! Loaded from cache...
+Running DM cache of 4 blocks, 2 words
+Block:  1
+3 bit offset:  4
+HIT! Loaded from cache...
+Running Fully-associated cache
+Tag:  256
+Block number:  1
+Offset in Block:  0
+HIT! Loaded from cache...
+Part C LRU:  [2, 2, 0, 0]
+Running 2-way set associative cache
+Tag:  1025
+Set Index:  4
+Offset in Block:  0
+HIT! Loaded from cache...
+2 way set cache: 
+ [[1024. 1025.]
+ [   0.    0.]
+ [   0.    0.]
+ [   0.    0.]]
+LRU: 
+ [[2. 2.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+OP:  10001100010000010010000000000000
+Register Array: [0, -262143, 12, 0, 524289, 40, 0, 0]
+Cycle: [157, 587, 188, 45, 108, 4]
+D.I.C:  157
+
+
+PC:  44
+SLT
+RS: $ 1
+RT: $ 0
+RD: $ 3
+No Branch necessary
+RD:  1
+OP:  00000000001000000001100000101010
+Register Array: [0, -262143, 12, 1, 524289, 40, 0, 0]
+Cycle: [158, 591, 190, 45, 109, 4]
+D.I.C:  158
+
+
+PC:  48
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 3
+Branching..Stalling..
+OP:  00010100011000000000000000000001
+Register Array: [0, -262143, 12, 1, 524289, 40, 0, 0]
+Cycle: [159, 594, 192, 46, 109, 4]
+D.I.C:  159
+
+
+PC:  56
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  4
+Result stored in RT is : 16
+X:  15
+OP:  00100000010000100000000000000100
+Register Array: [0, -262143, 16, 1, 524289, 40, 0, 0]
+Cycle: [160, 598, 193, 46, 110, 4]
+D.I.C:  160
+
+
+PC:  60
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+offset when MSB is 1:  -6
+Branching..Stalling..
+OP:  00010100010001011111111111111010
+Register Array: [0, -262143, 16, 1, 524289, 40, 0, 0]
+Cycle: [161, 601, 195, 47, 110, 4]
+D.I.C:  161
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  24
+PC:  40
+LW
+Offset:  16
+memory:  131073
+Register and its value: register 2 16
+KK: 0b10000000010000
+Running DM cache of 2 blocks, 4 words
+Offset for CACHE:  0b10000000010000 [256, 0, 256, 256, 0, 0]
+TAG : 256
+Block:  1
+4 bit offset:  0
+MISS! Replacing cache...
+Running DM cache of 4 blocks, 2 words
+Block:  2
+3 bit offset:  0
+MISS! Replacing cache...
+Running Fully-associated cache
+Tag:  256
+Block number:  2
+Offset in Block:  0
+MISS! Replacing cache...
+Running 2-way set associative cache
+Tag:  1026
+Set Index:  0
+Offset in Block:  0
+MISS! Replacing cache...
+2 way set cache: 
+ [[1026. 1025.]
+ [   0.    0.]
+ [   0.    0.]
+ [   0.    0.]]
+LRU: 
+ [[3. 2.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+OP:  10001100010000010010000000000000
+Register Array: [0, 131073, 16, 1, 524289, 40, 0, 0]
+Cycle: [162, 606, 197, 47, 110, 5]
+D.I.C:  162
+
+
+PC:  44
+SLT
+RS: $ 1
+RT: $ 0
+RD: $ 3
+Branch in progress...
+RD:  0
+OP:  00000000001000000001100000101010
+Register Array: [0, 131073, 16, 0, 524289, 40, 0, 0]
+Cycle: [163, 610, 199, 47, 111, 5]
+D.I.C:  163
+
+
+PC:  48
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 3
+No Branch Necessary.
+OP:  00010100011000000000000000000001
+Register Array: [0, 131073, 16, 0, 524289, 40, 0, 0]
+Cycle: [164, 613, 200, 48, 111, 5]
+D.I.C:  164
+
+
+PC:  52
+ADD
+RS register: $ 4 524289
+RT register: $ 1 131073
+RD register: $ 4
+The result stored in Register RD is:  655362
+X: 14
+OP:  00000000100000010010000000100000
+Register Array: [0, 131073, 16, 0, 655362, 40, 0, 0]
+Cycle: [165, 617, 201, 48, 112, 5]
+D.I.C:  165
+
+
+PC:  56
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  4
+Result stored in RT is : 20
+X:  15
+OP:  00100000010000100000000000000100
+Register Array: [0, 131073, 20, 0, 655362, 40, 0, 0]
+Cycle: [166, 621, 202, 48, 113, 5]
+D.I.C:  166
+
+
+PC:  60
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+offset when MSB is 1:  -6
+Branching..Stalling..
+OP:  00010100010001011111111111111010
+Register Array: [0, 131073, 20, 0, 655362, 40, 0, 0]
+Cycle: [167, 624, 204, 49, 113, 5]
+D.I.C:  167
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  25
+PC:  40
+LW
+Offset:  20
+memory:  -65535
+Register and its value: register 2 20
+KK: 0b10000000010100
+Running DM cache of 2 blocks, 4 words
+Offset for CACHE:  0b10000000010100 [256, 256, 256, 256, 256, 0]
+TAG : 256
+Block:  1
+4 bit offset:  4
+HIT! Loaded from cache...
+Running DM cache of 4 blocks, 2 words
+Block:  2
+3 bit offset:  4
+HIT! Loaded from cache...
+Running Fully-associated cache
+Tag:  256
+Block number:  2
+Offset in Block:  0
+HIT! Loaded from cache...
+Part C LRU:  [2, 2, 2, 0]
+Running 2-way set associative cache
+Tag:  1026
+Set Index:  4
+Offset in Block:  0
+HIT! Loaded from cache...
+2 way set cache: 
+ [[1026. 1025.]
+ [   0.    0.]
+ [   0.    0.]
+ [   0.    0.]]
+LRU: 
+ [[4. 2.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+OP:  10001100010000010010000000000000
+Register Array: [0, -65535, 20, 0, 655362, 40, 0, 0]
+Cycle: [168, 629, 206, 49, 113, 6]
+D.I.C:  168
+
+
+PC:  44
+SLT
+RS: $ 1
+RT: $ 0
+RD: $ 3
+No Branch necessary
+RD:  1
+OP:  00000000001000000001100000101010
+Register Array: [0, -65535, 20, 1, 655362, 40, 0, 0]
+Cycle: [169, 633, 208, 49, 114, 6]
+D.I.C:  169
+
+
+PC:  48
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 3
+Branching..Stalling..
+OP:  00010100011000000000000000000001
+Register Array: [0, -65535, 20, 1, 655362, 40, 0, 0]
+Cycle: [170, 636, 210, 50, 114, 6]
+D.I.C:  170
+
+
+PC:  56
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  4
+Result stored in RT is : 24
+X:  15
+OP:  00100000010000100000000000000100
+Register Array: [0, -65535, 24, 1, 655362, 40, 0, 0]
+Cycle: [171, 640, 211, 50, 115, 6]
+D.I.C:  171
+
+
+PC:  60
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+offset when MSB is 1:  -6
+Branching..Stalling..
+OP:  00010100010001011111111111111010
+Register Array: [0, -65535, 24, 1, 655362, 40, 0, 0]
+Cycle: [172, 643, 213, 51, 115, 6]
+D.I.C:  172
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  26
+PC:  40
+LW
+Offset:  24
+memory:  32769
+Register and its value: register 2 24
+KK: 0b10000000011000
+Running DM cache of 2 blocks, 4 words
+Offset for CACHE:  0b10000000011000 [256, 256, 256, 256, 256, 0]
+TAG : 256
+Block:  1
+4 bit offset:  8
+HIT! Loaded from cache...
+Running DM cache of 4 blocks, 2 words
+Block:  3
+3 bit offset:  0
+MISS! Replacing cache...
+Running Fully-associated cache
+Tag:  256
+Block number:  3
+Offset in Block:  0
+MISS! Replacing cache...
+Running 2-way set associative cache
+Tag:  1027
+Set Index:  0
+Offset in Block:  0
+MISS! Replacing cache...
+2 way set cache: 
+ [[1026. 1027.]
+ [   0.    0.]
+ [   0.    0.]
+ [   0.    0.]]
+LRU: 
+ [[4. 3.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+OP:  10001100010000010010000000000000
+Register Array: [0, 32769, 24, 1, 655362, 40, 0, 0]
+Cycle: [173, 648, 215, 51, 115, 7]
+D.I.C:  173
+
+
+PC:  44
+SLT
+RS: $ 1
+RT: $ 0
+RD: $ 3
+Branch in progress...
+RD:  0
+OP:  00000000001000000001100000101010
+Register Array: [0, 32769, 24, 0, 655362, 40, 0, 0]
+Cycle: [174, 652, 217, 51, 116, 7]
+D.I.C:  174
+
+
+PC:  48
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 3
+No Branch Necessary.
+OP:  00010100011000000000000000000001
+Register Array: [0, 32769, 24, 0, 655362, 40, 0, 0]
+Cycle: [175, 655, 218, 52, 116, 7]
+D.I.C:  175
+
+
+PC:  52
+ADD
+RS register: $ 4 655362
+RT register: $ 1 32769
+RD register: $ 4
+The result stored in Register RD is:  688131
+X: 14
+OP:  00000000100000010010000000100000
+Register Array: [0, 32769, 24, 0, 688131, 40, 0, 0]
+Cycle: [176, 659, 219, 52, 117, 7]
+D.I.C:  176
+
+
+PC:  56
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  4
+Result stored in RT is : 28
+X:  15
+OP:  00100000010000100000000000000100
+Register Array: [0, 32769, 28, 0, 688131, 40, 0, 0]
+Cycle: [177, 663, 220, 52, 118, 7]
+D.I.C:  177
+
+
+PC:  60
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+offset when MSB is 1:  -6
+Branching..Stalling..
+OP:  00010100010001011111111111111010
+Register Array: [0, 32769, 28, 0, 688131, 40, 0, 0]
+Cycle: [178, 666, 222, 53, 118, 7]
+D.I.C:  178
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  27
+PC:  40
+LW
+Offset:  28
+memory:  -16383
+Register and its value: register 2 28
+KK: 0b10000000011100
+Running DM cache of 2 blocks, 4 words
+Offset for CACHE:  0b10000000011100 [256, 256, 256, 256, 256, 256]
+TAG : 256
+Block:  1
+4 bit offset:  12
+HIT! Loaded from cache...
+Running DM cache of 4 blocks, 2 words
+Block:  3
+3 bit offset:  4
+HIT! Loaded from cache...
+Running Fully-associated cache
+Tag:  256
+Block number:  3
+Offset in Block:  0
+HIT! Loaded from cache...
+Part C LRU:  [2, 2, 2, 2]
+Running 2-way set associative cache
+Tag:  1027
+Set Index:  4
+Offset in Block:  0
+HIT! Loaded from cache...
+2 way set cache: 
+ [[1026. 1027.]
+ [   0.    0.]
+ [   0.    0.]
+ [   0.    0.]]
+LRU: 
+ [[4. 4.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+OP:  10001100010000010010000000000000
+Register Array: [0, -16383, 28, 0, 688131, 40, 0, 0]
+Cycle: [179, 671, 224, 53, 118, 8]
+D.I.C:  179
+
+
+PC:  44
+SLT
+RS: $ 1
+RT: $ 0
+RD: $ 3
+No Branch necessary
+RD:  1
+OP:  00000000001000000001100000101010
+Register Array: [0, -16383, 28, 1, 688131, 40, 0, 0]
+Cycle: [180, 675, 226, 53, 119, 8]
+D.I.C:  180
+
+
+PC:  48
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 3
+Branching..Stalling..
+OP:  00010100011000000000000000000001
+Register Array: [0, -16383, 28, 1, 688131, 40, 0, 0]
+Cycle: [181, 678, 228, 54, 119, 8]
+D.I.C:  181
+
+
+PC:  56
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  4
+Result stored in RT is : 32
+X:  15
+OP:  00100000010000100000000000000100
+Register Array: [0, -16383, 32, 1, 688131, 40, 0, 0]
+Cycle: [182, 682, 229, 54, 120, 8]
+D.I.C:  182
+
+
+PC:  60
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+offset when MSB is 1:  -6
+Branching..Stalling..
+OP:  00010100010001011111111111111010
+Register Array: [0, -16383, 32, 1, 688131, 40, 0, 0]
+Cycle: [183, 685, 231, 55, 120, 8]
+D.I.C:  183
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  28
+PC:  40
+LW
+Offset:  32
+memory:  8193
+Register and its value: register 2 32
+KK: 0b10000000100000
+Running DM cache of 2 blocks, 4 words
+Offset for CACHE:  0b10000000100000 [256, 256, 256, 256, 256, 256]
+TAG : 257
+Block:  0
+4 bit offset:  0
+MISS! Replacing cache...
+Running DM cache of 4 blocks, 2 words
+Block:  0
+3 bit offset:  0
+MISS! Replacing cache...
+Running Fully-associated cache
+Tag:  257
+Block number:  0
+Offset in Block:  0
+MISS! Replacing cache...
+Running 2-way set associative cache
+Tag:  1028
+Set Index:  0
+Offset in Block:  0
+MISS! Replacing cache...
+2 way set cache: 
+ [[1028. 1027.]
+ [   0.    0.]
+ [   0.    0.]
+ [   0.    0.]]
+LRU: 
+ [[5. 4.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+OP:  10001100010000010010000000000000
+Register Array: [0, 8193, 32, 1, 688131, 40, 0, 0]
+Cycle: [184, 690, 233, 55, 120, 9]
+D.I.C:  184
+
+
+PC:  44
+SLT
+RS: $ 1
+RT: $ 0
+RD: $ 3
+Branch in progress...
+RD:  0
+OP:  00000000001000000001100000101010
+Register Array: [0, 8193, 32, 0, 688131, 40, 0, 0]
+Cycle: [185, 694, 235, 55, 121, 9]
+D.I.C:  185
+
+
+PC:  48
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 3
+No Branch Necessary.
+OP:  00010100011000000000000000000001
+Register Array: [0, 8193, 32, 0, 688131, 40, 0, 0]
+Cycle: [186, 697, 236, 56, 121, 9]
+D.I.C:  186
+
+
+PC:  52
+ADD
+RS register: $ 4 688131
+RT register: $ 1 8193
+RD register: $ 4
+The result stored in Register RD is:  696324
+X: 14
+OP:  00000000100000010010000000100000
+Register Array: [0, 8193, 32, 0, 696324, 40, 0, 0]
+Cycle: [187, 701, 237, 56, 122, 9]
+D.I.C:  187
+
+
+PC:  56
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  4
+Result stored in RT is : 36
+X:  15
+OP:  00100000010000100000000000000100
+Register Array: [0, 8193, 36, 0, 696324, 40, 0, 0]
+Cycle: [188, 705, 238, 56, 123, 9]
+D.I.C:  188
+
+
+PC:  60
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+offset when MSB is 1:  -6
+Branching..Stalling..
+OP:  00010100010001011111111111111010
+Register Array: [0, 8193, 36, 0, 696324, 40, 0, 0]
+Cycle: [189, 708, 240, 57, 123, 9]
+D.I.C:  189
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  29
+PC:  40
+LW
+Offset:  36
+memory:  -4095
+Register and its value: register 2 36
+KK: 0b10000000100100
+Running DM cache of 2 blocks, 4 words
+Offset for CACHE:  0b10000000100100 [257, 256, 257, 256, 256, 256]
+TAG : 257
+Block:  0
+4 bit offset:  4
+HIT! Loaded from cache...
+Running DM cache of 4 blocks, 2 words
+Block:  0
+3 bit offset:  4
+HIT! Loaded from cache...
+Running Fully-associated cache
+Tag:  257
+Block number:  0
+Offset in Block:  0
+HIT! Loaded from cache...
+Part C LRU:  [4, 2, 2, 2]
+Running 2-way set associative cache
+Tag:  1028
+Set Index:  4
+Offset in Block:  0
+HIT! Loaded from cache...
+2 way set cache: 
+ [[1028. 1027.]
+ [   0.    0.]
+ [   0.    0.]
+ [   0.    0.]]
+LRU: 
+ [[6. 4.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+OP:  10001100010000010010000000000000
+Register Array: [0, -4095, 36, 0, 696324, 40, 0, 0]
+Cycle: [190, 713, 242, 57, 123, 10]
+D.I.C:  190
+
+
+PC:  44
+SLT
+RS: $ 1
+RT: $ 0
+RD: $ 3
+No Branch necessary
+RD:  1
+OP:  00000000001000000001100000101010
+Register Array: [0, -4095, 36, 1, 696324, 40, 0, 0]
+Cycle: [191, 717, 244, 57, 124, 10]
+D.I.C:  191
+
+
+PC:  48
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 3
+Branching..Stalling..
+OP:  00010100011000000000000000000001
+Register Array: [0, -4095, 36, 1, 696324, 40, 0, 0]
+Cycle: [192, 720, 246, 58, 124, 10]
+D.I.C:  192
+
+
+PC:  56
+ADDI
+RS: $ 2
+RT: $ 2
+imm:  4
+Result stored in RT is : 40
+X:  15
+OP:  00100000010000100000000000000100
+Register Array: [0, -4095, 40, 1, 696324, 40, 0, 0]
+Cycle: [193, 724, 247, 58, 125, 10]
+D.I.C:  193
+
+
+PC:  60
+BNE
+---------------------Previous $ 2
+---------------------BEQ      $ 2
+offset when MSB is 1:  -6
+No Branch Necessary.
+OP:  00010100010001011111111111111010
+Register Array: [0, -4095, 40, 1, 696324, 40, 0, 0]
+Cycle: [194, 727, 248, 59, 125, 10]
+D.I.C:  194
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Total Hazards:  30
+PC:  64
+SW
+Register and its value: register 4 696324
+Offset:  8192
+memory location:  0
+What got stored in memory? 696324
+OP:  10101100000001000010000000000000
+Register Array: [0, -4095, 40, 1, 696324, 40, 0, 0]
+Cycle: [195, 731, 249, 59, 126, 10]
+D.I.C:  195
+
+
+PC:  68
+OP:  00010000000000001111111111111111
+Register Array: [0, -4095, 40, 1, 696324, 40, 0, 0]
+Cycle: [196, 734, 250, 60, 126, 10]
+D.I.C:  196
+
+
+Dynmic Instruction Count:  196 
+PC:  68
+Single Cycle Count:        196
+Multi Cycle Count:         734
+Count 3 Step Cycles:       60
+Count 4 Step Cycles:       126
+Count 5 Step Cycles:       10
+Pipeline Cycle count:      284
+Below is a listing of the final values for each register: 
+
+$1 =  -4095 
+$2 =  40 
+$3 =  1
+$4 =  696324 
+$5 =  40 
+$6 =  0
+$7 =  0
+Memory display: ...
+Total times accessed cache DM 4 words, 2 blocks:  10
+Total hits:  7
+Total misses:  3
+Cache Hit Ratio:  70 %
+Valid bits: [1, 1]
+Total times accessed cache DM 2 words, 4 blocks:  10
+Total hits:  5
+Total misses:  5
+Cache Hit Ratio:  50 %
+Valid bits: [1, 1, 1, 1]
+Total times accessed cache from fully associative cache: 10
+Total hits:  5
+Total misses:  5
+Cache Hit Ratio:  50 %
+Valid bits: [1, 1, 1, 1]
+Total times accessed cache from set associative 2-way:  10
+Total hits:  5
+Total misses:  5
+Cache Hit Ratio:  50 %
+Valid bits: [[1. 1.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+Memory  0 :  696324
+Memory  4 :-1048575
+Memory  8 :  524289
+Memory  12 : -262143
+Memory  16 :  131073
+Memory  20 :  -65535
+Memory  24 :   32769
+Memory  28 :  -16383
+Memory  32 :    8193
+Memory  36 :   -4095
+Memory  40 :    2049
+Memory  44 :   -1023
+Memory  48 :     513
+Memory  52 :    -255
+Memory  56 :     129
+Memory  60 :     -63
+Memory  64 :      33
+Memory  68 :     -15
+Memory  72 :       9
+Memory  76 :      -3
+Memory  80 :       3
+--------------------------------
+Instrution percentages
+ALU:         54 %
+Jump:        0%
+Branch:      30 %
+Memory:      16 %
+Other:        1 %
